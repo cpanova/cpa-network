@@ -73,6 +73,10 @@ class Currency(models.Model):
 
 
 class Payout(models.Model):
+
+    class Meta:
+        ordering = ('-payout',)
+
     revenue = models.DecimalField(max_digits=7, decimal_places=2)
     payout = models.DecimalField(max_digits=7, decimal_places=2)
     countries = models.ManyToManyField(Country)
