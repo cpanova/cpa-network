@@ -10,7 +10,11 @@ def conversion(data):
     except Click.DoesNotExist:
         return f"Click not found. click_id: {data['click_id']}"
 
-    # TODO detect duplicates of conversion.click_id + goal_value
+    duplicate = bool(
+        Conversion.objects
+        .filter(click_id=click.id, goal_value=data['goal'])
+        .count()
+    )
 
     conversion = Conversion()
 
@@ -30,12 +34,15 @@ def conversion(data):
         conversion.status = APPROVED_STATUS
         conversion.goal = payout.goal
         conversion.currency = payout.currency
+        if duplicate:
+            conversion.status = REJECTED_STATUS
+            conversion.comment = 'Duplicate Click ID'
     else:
         conversion.revenue = 0
         conversion.payout = 0
         conversion.status = REJECTED_STATUS
+        conversion.comment = 'Payout not found'
 
-    # conversion.id = click.id
     conversion.click_id = click.id
     conversion.click_date = click.created_at
 

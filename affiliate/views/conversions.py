@@ -41,15 +41,20 @@ class ConversionSerializer(serializers.ModelSerializer):
     goal = GoalSerializer()
     currency = CurrencySerializer()
     id = serializers.SerializerMethodField()
+    click_id = serializers.SerializerMethodField()
 
     def get_id(self, obj):
         return obj.id.hex
+
+    def get_click_id(self, obj):
+        return obj.click_id.hex
 
     class Meta:
         model = Conversion
         fields = (
             'id',
             'created_at',
+            'click_id',
             'offer',
             'payout',
             'sub1',
@@ -63,6 +68,7 @@ class ConversionSerializer(serializers.ModelSerializer):
             'country',
             'ip',
             'ua',
+            'comment',
         )
 
 
