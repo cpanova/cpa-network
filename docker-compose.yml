@@ -1,0 +1,34 @@
+version: '2'
+
+
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    image: sandbox/affiliate-platform
+    command: honcho start --procfile Procfile.dev
+    volumes:
+      - .:/app
+    ports:
+      - 8000:80
+    environment:
+      PYTHONUNBUFFERED: 1
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: "postgres:alpine"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
