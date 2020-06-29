@@ -71,6 +71,7 @@ class Conversion(models.Model):
     status = models.CharField(
         max_length=10, choices=conversion_statuses, default=REJECTED_STATUS)
     sum = models.FloatField(default=0.0)
+    comment = models.CharField(max_length=128, default='', blank=True)
 
     goal = models.ForeignKey(
         Goal,
