@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from tracker.models import Conversion
 from django.conf import settings
-from offer.models import Offer
+from offer.models import Offer, Goal, Currency
 
 
 class OfferSerializer(serializers.ModelSerializer):
@@ -19,8 +19,27 @@ class OfferSerializer(serializers.ModelSerializer):
         )
 
 
+class GoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = (
+            'name',
+        )
+
+
+class CurrencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Currency
+        fields = (
+            'code',
+            'name',
+        )
+
+
 class ConversionSerializer(serializers.ModelSerializer):
     offer = OfferSerializer()
+    goal = GoalSerializer()
+    currency = CurrencySerializer()
     id = serializers.SerializerMethodField()
 
     def get_id(self, obj):
@@ -40,6 +59,7 @@ class ConversionSerializer(serializers.ModelSerializer):
             'sub5',
             'status',
             'goal',
+            'currency',
             'country',
             'ip',
             'ua',

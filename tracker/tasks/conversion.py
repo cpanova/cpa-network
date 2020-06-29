@@ -14,8 +14,7 @@ def conversion(data):
 
     conversion = Conversion()
 
-    # offer_payout = find_payout(click.offer_id, click.country, data['goal'])
-    offer_payout = (
+    payout = (
         Payout.objects
         .filter(
             offer_id=click.offer_id,
@@ -25,13 +24,15 @@ def conversion(data):
         .first()
     )
 
-    if offer_payout:
-        revenue = offer_payout.revenue
-        payout = offer_payout.payout
+    if payout:
+        conversion.revenue = payout.revenue
+        conversion.payout = payout.payout
         conversion.status = APPROVED_STATUS
+        conversion.goal = payout.goal
+        conversion.currency = payout.currency
     else:
-        revenue = 0
-        payout = 0
+        conversion.revenue = 0
+        conversion.payout = 0
         conversion.status = REJECTED_STATUS
 
     # conversion.id = click.id
@@ -45,13 +46,11 @@ def conversion(data):
     conversion.sub3 = click.sub3
     conversion.sub4 = click.sub4
     conversion.sub5 = click.sub5
-    conversion.revenue = revenue
-    conversion.payout = payout
     conversion.ip = click.ip
     conversion.ua = click.ua
     conversion.country = click.country
 
-    conversion.goal = data['goal']
+    conversion.goal_value = data['goal']
     conversion.sum = data['sum']
 
     conversion.save()

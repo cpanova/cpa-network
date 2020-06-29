@@ -61,7 +61,7 @@ def click(request):
 
 def postback(request):
     click_id = request.GET.get('click_id')
-    goal = request.GET.get('goal', '')
+    goal = request.GET.get('goal', '1')
     try:
         sum_ = float(request.GET.get('sum', ''))
     except ValueError:

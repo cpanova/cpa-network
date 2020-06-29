@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from offer.models import Offer
+from offer.models import Offer, Goal, Currency
 from django.contrib.auth import get_user_model
 
 
@@ -67,10 +67,24 @@ class Conversion(models.Model):
     ip = models.GenericIPAddressField()
     country = models.CharField(max_length=2, default="")
     ua = models.CharField(max_length=200, default="")
-    goal = models.CharField(max_length=20, default="")
+    goal_value = models.CharField(max_length=20, default="")
     status = models.CharField(
         max_length=10, choices=conversion_statuses, default=REJECTED_STATUS)
     sum = models.FloatField(default=0.0)
+
+    goal = models.ForeignKey(
+        Goal,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
+    currency = models.ForeignKey(
+        Currency,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
 
     offer = models.ForeignKey(
         Offer,

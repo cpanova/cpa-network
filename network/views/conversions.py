@@ -27,6 +27,7 @@ class ConversionSerializer(serializers.ModelSerializer):
             'sub5',
             'status',
             'goal',
+            'goal_value',
             'country',
             'ip',
             'ua',
