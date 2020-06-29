@@ -14,19 +14,21 @@ def _daily_report_sql(
     sql = f"""
         (SELECT
             cl.day,
-            cl.clicks,
-            cv.total_qty,
-            cv.approved_qty,
-            cv.hold_qty,
-            cv.rejected_qty,
-            case cl.clicks
-                when 0 then 0  -- avoid divizion by zero
-                else (100 * cv.total_qty / cl.clicks)
-            end AS cr,
-            cv.total_payout,
-            cv.approved_payout,
-            cv.hold_payout,
-            cv.rejected_payout
+            COALESCE(cl.clicks, 0),
+            COALESCE(cv.total_qty, 0),
+            COALESCE(cv.approved_qty, 0),
+            COALESCE(cv.hold_qty, 0),
+            COALESCE(cv.rejected_qty, 0),
+            COALESCE(
+                case cl.clicks
+                    when 0 then 0  -- avoid divizion by zero
+                    else (100 * cv.total_qty / cl.clicks)
+                end
+                , 0) AS cr,
+            COALESCE(cv.total_payout, 0),
+            COALESCE(cv.approved_payout, 0),
+            COALESCE(cv.hold_payout, 0),
+            COALESCE(cv.rejected_payout, 0)
         FROM
             (
                 SELECT
@@ -48,9 +50,9 @@ def _daily_report_sql(
                     count(*)    FILTER (WHERE status = 'hold')     AS hold_qty,
                     count(*)    FILTER (WHERE status = 'rejected') AS rejected_qty,
                     sum(payout)                                    AS total_payout,
-                    sum(CASE WHEN status = 'approved' THEN payout ELSE 0 END) AS approved_payout,
-                    sum(CASE WHEN status = 'hold'     THEN payout ELSE 0 END) AS hold_payout,
-                    sum(CASE WHEN status = 'rejected' THEN payout ELSE 0 END) AS rejected_payout
+                    sum(payout) FILTER (WHERE status = 'approved') AS approved_payout,
+                    sum(payout) FILTER (WHERE status = 'hold')     AS hold_payout,
+                    sum(payout) FILTER (WHERE status = 'rejected') AS rejected_payout
                 FROM tracker_conversion
                 WHERE
                     affiliate_id = {user_id}
@@ -105,16 +107,16 @@ def _offer_report_sql(
     SELECT
         report.offer_id,
         o.title,
-        report.clicks,
-        report.total_qty,
-        report.approved_qty,
-        report.hold_qty,
-        report.rejected_qty,
-        report.cr,
-        report.total_payout,
-        report.approved_payout,
-        report.hold_payout,
-        report.rejected_payout
+        COALESCE(report.clicks, 0),
+        COALESCE(report.total_qty, 0),
+        COALESCE(report.approved_qty, 0),
+        COALESCE(report.hold_qty, 0),
+        COALESCE(report.rejected_qty, 0),
+        COALESCE(report.cr, 0),
+        COALESCE(report.total_payout, 0),
+        COALESCE(report.approved_payout, 0),
+        COALESCE(report.hold_payout, 0),
+        COALESCE(report.rejected_payout, 0)
     FROM
         (
             SELECT
@@ -152,9 +154,9 @@ def _offer_report_sql(
                         count(*)    FILTER (WHERE status = 'hold')     AS hold_qty,
                         count(*)    FILTER (WHERE status = 'rejected') AS rejected_qty,
                         sum(payout)                                    AS total_payout,
-                        sum(CASE WHEN status = 'approved' THEN payout ELSE 0 END) AS approved_payout,
-                        sum(CASE WHEN status = 'hold'     THEN payout ELSE 0 END) AS hold_payout,
-                        sum(CASE WHEN status = 'rejected' THEN payout ELSE 0 END) AS rejected_payout
+                        sum(payout) FILTER (WHERE status = 'approved') AS approved_payout,
+                        sum(payout) FILTER (WHERE status = 'hold')     AS hold_payout,
+                        sum(payout) FILTER (WHERE status = 'rejected') AS rejected_payout
                     FROM tracker_conversion
                     WHERE
                         affiliate_id = {user_id}
