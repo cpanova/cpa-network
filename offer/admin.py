@@ -41,7 +41,10 @@ class GoalAdmin(admin.ModelAdmin):
 
 @admin.register(Payout)
 class PayoutAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'offer', 'revenue', 'payout', 'currency',
+        'goal_value', 'goal',
+    )
 
 
 @admin.register(Currency)
