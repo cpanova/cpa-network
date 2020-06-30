@@ -19,6 +19,9 @@ class OfferTrafficSource_inline(admin.TabularInline):
 @admin.register(Offer)
 class OfferAdmin(admin.ModelAdmin):
     inlines = (OfferTrafficSource_inline,)
+    list_display = (
+        'title', 'id', 'status', 'advertiser',
+    )
 
 
 @admin.register(Category)
