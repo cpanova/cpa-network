@@ -16,9 +16,17 @@ class OfferTrafficSource_inline(admin.TabularInline):
     extra = 1
 
 
+class Payout_inline(admin.TabularInline):
+    model = Payout
+    extra = 1
+
+
 @admin.register(Offer)
 class OfferAdmin(admin.ModelAdmin):
-    inlines = (OfferTrafficSource_inline,)
+    inlines = (
+        OfferTrafficSource_inline,
+        Payout_inline,
+    )
     list_display = (
         'title', 'id', 'status', 'advertiser',
     )
