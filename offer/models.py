@@ -23,6 +23,8 @@ class Offer(models.Model):
         'TrafficSource', through='OfferTrafficSource', blank=True)
     status = models.CharField(max_length=20, choices=offer_statuses,
                               default=ACTIVE_STATUS)
+    icon = models.CharField(max_length=255,
+                            default=None, blank=True, null=True)
     advertiser = models.ForeignKey(
         'Advertiser',
         on_delete=models.SET_NULL,
