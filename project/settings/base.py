@@ -31,12 +31,11 @@ INSTALLED_APPS = [
 
     'offer',
     'affiliate',
-    # 'manager',
     'network',
     'tracker',
     'user_profile',
-    # 'reports',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
