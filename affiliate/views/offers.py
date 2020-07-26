@@ -1,8 +1,10 @@
+import django_filters
 from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
 from countries_plus.models import Country
 from django.conf import settings
 from offer.models import (
@@ -14,6 +16,7 @@ from offer.models import (
     OfferTrafficSource,
     Payout
 )
+from ..filters import CommaSeparatedTextFilter
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -109,10 +112,24 @@ class OfferSerializer(serializers.ModelSerializer):
         )
 
 
+class OfferFilterSet(django_filters.FilterSet):
+    categories = CommaSeparatedTextFilter(
+        field_name='categories',
+        help_text='Exact category name or comma-separated names list'
+    )
+    countries = CommaSeparatedTextFilter(
+        field_name='countries',
+        help_text='Country 2-character code or comma-separated list'
+    )
+
+
+
 class OfferListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = OfferSerializer
     queryset = Offer.objects
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = OfferFilterSet
 
 
 class OfferRetrieveView(generics.RetrieveAPIView):
