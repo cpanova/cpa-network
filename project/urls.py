@@ -30,4 +30,5 @@ urlpatterns = [
     path('affiliate/', include('affiliate.urls')),
     path('network/', include('network.urls')),
     path('', include('tracker.urls')),
+    path('api/', include('dictionaries.urls')),
 ]
