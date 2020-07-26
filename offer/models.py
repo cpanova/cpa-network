@@ -13,6 +13,10 @@ offer_statuses = (
 
 
 class Offer(models.Model):
+
+    class Meta:
+        ordering = ('-id',)
+
     title = models.CharField(max_length=256, default='')
     description = models.TextField(default='')
     tracking_link = models.CharField(max_length=1024, default='')
