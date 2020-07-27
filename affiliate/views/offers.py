@@ -103,6 +103,7 @@ class OfferSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'description',
+            'description_html',
             'preview_link',
             'icon',
             'countries',

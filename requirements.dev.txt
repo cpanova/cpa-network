@@ -17,3 +17,4 @@ maxminddb-geolite2
 redis
 honcho
 gunicorn
+django-tinymce

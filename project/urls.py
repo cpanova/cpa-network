@@ -31,4 +31,5 @@ urlpatterns = [
     path('network/', include('network.urls')),
     path('', include('tracker.urls')),
     path('api/', include('dictionaries.urls')),
+    path('tinymce/', include('tinymce.urls')),
 ]
