@@ -124,13 +124,12 @@ class OfferFilterSet(django_filters.FilterSet):
     )
 
 
-
 class OfferListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = OfferSerializer
     queryset = Offer.objects
     filter_backends = (DjangoFilterBackend,)
-    filter_class = OfferFilterSet
+    filterset_class = OfferFilterSet
 
 
 class OfferRetrieveView(generics.RetrieveAPIView):
