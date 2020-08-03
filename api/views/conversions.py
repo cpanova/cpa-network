@@ -5,9 +5,20 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from tracker.models import Conversion
 from ..permissions import IsSuperUser
+from offer.models import Currency
+
+
+class CurrencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Currency
+        fields = (
+            'code',
+            'name',
+        )
 
 
 class ConversionSerializer(serializers.ModelSerializer):
+    currency = CurrencySerializer()
 
     class Meta:
         model = Conversion
@@ -19,6 +30,7 @@ class ConversionSerializer(serializers.ModelSerializer):
             # TODO offer.name
             'revenue',
             'payout',
+            'currency',
             'sub1',
             'sub2',
             'sub3',
@@ -49,6 +61,11 @@ class ConversionCreateView(APIView):
                 "Required 'pid'",
                 status.HTTP_400_BAD_REQUEST
             )
+        currency_code = request.data.get('currency')
+        currency = None
+        if currency_code:
+            currency = Currency.objects.filter(code=currency_code).first()
+
         conversion = Conversion()
         conversion.offer_id = offer_id
         conversion.affiliate_id = affiliate_id
@@ -58,7 +75,10 @@ class ConversionCreateView(APIView):
             conversion.revenue = request.data.get('revenue')
         if request.data.get('payout'):
             conversion.payout = request.data.get('payout')
+        if currency:
+            conversion.currency = currency
         conversion.save()
+
         return Response(
             ConversionSerializer(conversion).data,
             status=status.HTTP_201_CREATED

@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
-from offer.models import Offer
+from offer.models import Offer, Currency
 
 
 class ConversionTestCase(APITestCase):
@@ -15,11 +15,8 @@ class ConversionTestCase(APITestCase):
         self.user = get_user_model().objects.create_user(
             id=1, is_staff=True, is_superuser=True, **credentials)
         self.client.login(**credentials)
-        self.offer = Offer.objects.create(
-            id=1,
-            title='blabla',
-            description='blabla'
-        )
+        Offer.objects.create(id=1, title='a', description='a')
+        Currency.objects.create(code="USD", name="Dollar")
 
     def test_create(self):
         data = {
@@ -28,6 +25,7 @@ class ConversionTestCase(APITestCase):
             "goal": '1',
             "revenue": 32,
             "payout": 28,
+            "currency": 'USD',
         }
 
         response = self.client.post(self.url, data, format='json')
@@ -39,3 +37,4 @@ class ConversionTestCase(APITestCase):
         self.assertEqual(conversion['goal_value'], '1')
         self.assertEqual(float(conversion['revenue']), 32)
         self.assertEqual(float(conversion['payout']), 28)
+        self.assertEqual(conversion['currency']['code'], 'USD')
