@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'network',
     'tracker',
     'user_profile',
+    'api',
 ]
 
 
