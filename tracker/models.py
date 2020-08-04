@@ -52,6 +52,10 @@ conversion_statuses = (
 
 
 class Conversion(models.Model):
+
+    class Meta:
+        ordering = ('-created_at',)
+
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
     click_id = models.UUIDField(editable=False, null=True, default=None)
