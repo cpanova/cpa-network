@@ -47,7 +47,10 @@ class ConversionSerializer(serializers.ModelSerializer):
         return obj.id.hex
 
     def get_click_id(self, obj):
-        return obj.click_id.hex
+        if obj.click_id:
+            return obj.click_id.hex
+        else:
+            return None
 
     class Meta:
         model = Conversion
