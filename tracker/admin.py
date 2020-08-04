@@ -3,4 +3,19 @@ from .models import Click, Conversion
 
 
 admin.site.register(Click)
-admin.site.register(Conversion)
+
+
+@admin.register(Conversion)
+class ConversionAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'created_at',
+        'affiliate',
+        'offer',
+        'revenue',
+        'payout',
+        'goal',
+        'status',
+        'ip',
+        'country',
+    )
