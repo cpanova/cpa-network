@@ -1,11 +1,11 @@
-from rest_framework import status
+import rest_framework.status
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from tracker.models import Conversion
+from tracker.models import Conversion, conversion_statuses
 from ..permissions import IsSuperUser
-from offer.models import Currency
+from offer.models import Currency, Goal
 
 
 class CurrencySerializer(serializers.ModelSerializer):
@@ -17,8 +17,18 @@ class CurrencySerializer(serializers.ModelSerializer):
         )
 
 
+class GoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = (
+            'id',
+            'name',
+        )
+
+
 class ConversionSerializer(serializers.ModelSerializer):
     currency = CurrencySerializer()
+    goal = GoalSerializer()
 
     class Meta:
         model = Conversion
@@ -53,13 +63,19 @@ class ConversionCreateView(APIView):
         if not offer_id:
             return Response(
                 "Required 'offer_id'",
-                status.HTTP_400_BAD_REQUEST
+                rest_framework.status.HTTP_400_BAD_REQUEST
             )
         affiliate_id = request.data.get('pid')
         if not affiliate_id:
             return Response(
                 "Required 'pid'",
-                status.HTTP_400_BAD_REQUEST
+                rest_framework.HTTP_400_BAD_REQUEST
+            )
+        status = request.data.get('status')
+        if status and status not in map(lambda r: r[0], conversion_statuses):
+            return Response(
+                "Wrong status value",
+                rest_framework.HTTP_400_BAD_REQUEST
             )
         currency_code = request.data.get('currency')
         currency = None
@@ -77,9 +93,13 @@ class ConversionCreateView(APIView):
             conversion.payout = request.data.get('payout')
         if currency:
             conversion.currency = currency
+        if status:
+            conversion.status = status
+        if request.data.get('goal_id'):
+            conversion.goal_id = request.data.get('goal_id')
         conversion.save()
 
         return Response(
             ConversionSerializer(conversion).data,
-            status=status.HTTP_201_CREATED
+            status=rest_framework.status.HTTP_201_CREATED
         )
