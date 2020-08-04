@@ -13,7 +13,7 @@ def _daily_report_sql(
 
     sql = f"""
         (SELECT
-            cv.day,
+            COALESCE(cl.day, cv.day),
             COALESCE(cl.clicks, 0),
             COALESCE(cv.total_qty, 0),
             COALESCE(cv.approved_qty, 0),
@@ -120,7 +120,7 @@ def _offer_report_sql(
     FROM
         (
             SELECT
-                cv.offer_id,
+                COALESCE(cl.offer_id, cv.offer_id) as offer_id,
                 cl.clicks,
                 cv.total_qty,
                 cv.approved_qty,
