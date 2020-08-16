@@ -21,6 +21,15 @@ class Payout_inline(admin.TabularInline):
     extra = 1
 
 
+def duplicate_offer(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.id = None
+        obj.title = obj.title + ' DUPLICATE'
+        obj.save()
+    queryset.update(status='p')
+duplicate_offer.short_description = "Duplicate"
+
+
 @admin.register(Offer)
 class OfferAdmin(admin.ModelAdmin):
     inlines = (
@@ -30,6 +39,7 @@ class OfferAdmin(admin.ModelAdmin):
     list_display = (
         'title', 'id', 'status', 'advertiser',
     )
+    actions = [duplicate_offer]
 
 
 @admin.register(Category)
