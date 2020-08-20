@@ -7,7 +7,8 @@ from .models import (
     Goal,
     Currency,
     Payout,
-    Advertiser
+    Advertiser,
+    STOPPED_STATUS,
 )
 
 
@@ -22,11 +23,39 @@ class Payout_inline(admin.TabularInline):
 
 
 def duplicate_offer(modeladmin, request, queryset):
-    for obj in queryset:
-        obj.id = None
-        obj.title = obj.title + ' DUPLICATE'
-        obj.save()
-    queryset.update(status='p')
+    for offer in queryset:
+        source_payouts = [p for p in offer.payouts.all()]
+        source_countries = [c for c in offer.countries.all()]
+        source_categories = [c for c in offer.categories.all()]
+        source_ots = [ots for ots in offer.offertrafficsource_set.all()]
+
+        offer.id = None
+        offer.title = offer.title + ' DUPLICATE'
+        offer.status = STOPPED_STATUS
+        offer.save()
+
+        for country in source_countries:
+            offer.countries.add(country)
+
+        for category in source_categories:
+            offer.categories.add(category)
+
+        for payout in source_payouts:
+            source_payout_countries = [c for c in payout.countries.all()]
+
+            payout.id = None
+            payout.save()
+
+            for country in source_payout_countries:
+                payout.countries.add(country)
+
+            offer.payouts.add(payout)
+
+        for ots in source_ots:
+            ots.id = None
+            ots.save()
+            offer.offertrafficsource_set.add(ots)
+    # queryset.update(status=PAUSED_STATUS)
 duplicate_offer.short_description = "Duplicate"
 
 
