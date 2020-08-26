@@ -4,7 +4,10 @@ from ..models import Postback, Log
 
 
 def find_postbacks(affiliate_id, offer_id=None):
-    return Postback.objects.filter(affiliate_id=affiliate_id, offer_id=offer_id)
+    return (
+        Postback.objects
+        .filter(affiliate_id=affiliate_id, offer_id=offer_id)
+    )
 
 
 @_celery.task
@@ -29,15 +32,16 @@ def send_postback(conversion):
         try:
             resp = requests.get(url)
 
-            persist_log(url, resp.status_code, resp.text)
+            persist_log(affiliate_id, url, resp.status_code, resp.text)
         except requests.exceptions.Timeout:
-            persist_log(url, None, 'Timeout')
+            persist_log(affiliate_id, url, '', 'Timeout')
         except Exception as e:
-            persist_log(url, None, str(e))
+            persist_log(affiliate_id, url, '', str(e))
 
 
-def persist_log(url, status, text):
+def persist_log(affiliate_id, url, status, text):
     log = Log()
+    log.affiliate_id = affiliate_id
     log.url = url
     log.response_status = status
     log.response_text = text
@@ -45,13 +49,6 @@ def persist_log(url, status, text):
 
 
 def replace_macro(url: str, data: dict) -> str:
-    # macros:
-
-    # - sub1..5
-    # - offer_id
-    # - sum
-    # - currency
-    # - goal_value
     url = url.replace('{sub1}', data.get('sub1', ''))
     url = url.replace('{sub2}', data.get('sub2', ''))
     url = url.replace('{sub3}', data.get('sub3', ''))
@@ -59,7 +56,7 @@ def replace_macro(url: str, data: dict) -> str:
     url = url.replace('{sub5}', data.get('sub5', ''))
     url = url.replace('{offer}', str(data.get('offer_id', '')))
     url = url.replace('{sum}', str(data.get('payout', '')))
-    url = url.replace('{currency}', data.get('currency', ''))
+    url = url.replace('{currency}', data.get('currency', '') or '')
     url = url.replace('{goal}', data.get('goal_value', ''))
 
     return url

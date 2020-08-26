@@ -13,7 +13,10 @@ postback_statuses = (
 
 class Postback(models.Model):
     url = models.CharField(max_length=500)
-    status = models.CharField(max_length=20, choices=postback_statuses, default=CREATED_STATUS)
+    status = models.CharField(
+        max_length=20,
+        choices=postback_statuses,
+        default=CREATED_STATUS)
     goal = models.CharField(max_length=20, default="")
 
     offer = models.ForeignKey(

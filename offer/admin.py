@@ -56,6 +56,8 @@ def duplicate_offer(modeladmin, request, queryset):
             ots.save()
             offer.offertrafficsource_set.add(ots)
     # queryset.update(status=PAUSED_STATUS)
+
+
 duplicate_offer.short_description = "Duplicate"
 
 
