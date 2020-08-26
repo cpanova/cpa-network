@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'tracker',
     'user_profile',
     'api',
+    'postback',
 ]
 
 
