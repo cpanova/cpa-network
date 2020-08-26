@@ -7,7 +7,7 @@ from django.conf import settings  # noqa
 
 
 _celery = Celery(
-    'leon-pp',
+    'cpa-platform',
     broker=settings.REDIS_URL
 )
 
