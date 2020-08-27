@@ -17,7 +17,7 @@ class Postback(models.Model):
         max_length=20,
         choices=postback_statuses,
         default=CREATED_STATUS)
-    goal = models.CharField(max_length=20, default="")
+    goal = models.CharField(max_length=20, blank=True, default="")
 
     offer = models.ForeignKey(
         Offer,
