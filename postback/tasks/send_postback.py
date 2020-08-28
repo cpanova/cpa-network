@@ -32,14 +32,14 @@ def send_postback(conversion):
         try:
             resp = requests.get(url)
 
-            persist_log(affiliate_id, url, resp.status_code, resp.text)
+            persist_log(affiliate_id, url, str(resp.status_code), resp.text)
         except requests.exceptions.Timeout:
             persist_log(affiliate_id, url, '', 'Timeout')
         except Exception as e:
             persist_log(affiliate_id, url, '', str(e))
 
 
-def persist_log(affiliate_id, url, status, text):
+def persist_log(affiliate_id: int, url: str, status: str, text: str):
     log = Log()
     log.affiliate_id = affiliate_id
     log.url = url
