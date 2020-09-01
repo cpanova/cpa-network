@@ -20,4 +20,3 @@ def on_conversion_created(sender, instance, created, **kwargs):
             'currency': instance.currency.code if instance.currency else '',
         }
         send_postback.delay(cv)
-        print(f'signal: {cv}')
