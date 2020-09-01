@@ -7,6 +7,7 @@ from .models import (
     Goal,
     Currency,
     Payout,
+    Landing,
     Advertiser,
     STOPPED_STATUS,
 )
@@ -19,6 +20,11 @@ class OfferTrafficSource_inline(admin.TabularInline):
 
 class Payout_inline(admin.TabularInline):
     model = Payout
+    extra = 1
+
+
+class Landing_inline(admin.TabularInline):
+    model = Landing
     extra = 1
 
 
@@ -66,6 +72,7 @@ class OfferAdmin(admin.ModelAdmin):
     inlines = (
         OfferTrafficSource_inline,
         Payout_inline,
+        Landing_inline,
     )
     list_display = (
         'title', 'id', 'status', 'advertiser',

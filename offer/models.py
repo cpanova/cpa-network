@@ -127,3 +127,18 @@ class Advertiser(models.Model):
 
     def __str__(self):
         return self.company
+
+
+class Landing(models.Model):
+    name = models.CharField(max_length=100)
+    url = models.CharField(max_length=1024, default='')
+    preview_url = models.CharField(max_length=1024, default='')
+
+    offer = models.ForeignKey(
+        Offer,
+        related_name='landings',
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f'{self.id}: {self.name}'
