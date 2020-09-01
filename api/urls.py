@@ -11,7 +11,7 @@ urlpatterns = [
     path(
         'offers/',
         OfferCreateView.as_view(), name='api-offers'),
-    # path(
-    #     'offers/<int:pk>/payouts/',
-    #     PayoutCreateView.as_view(), name='api-payouts'),
+    path(
+        'offers/<int:pk>/payouts/',
+        PayoutCreateView.as_view(), name='api-payouts'),
 ]
