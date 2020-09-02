@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from tracker.tasks.click import click as click_task
 from tracker.tasks.conversion import conversion
 from tracker.dao import TrackerCache
+from .models import conversion_statuses
 
 
 def get_client_ip(request):
@@ -62,6 +63,8 @@ def click(request):
 def postback(request):
     click_id = request.GET.get('click_id')
     goal = request.GET.get('goal', '1')
+    status = request.GET.get('status')
+
     try:
         sum_ = float(request.GET.get('sum', ''))
     except ValueError:
@@ -77,6 +80,11 @@ def postback(request):
         'goal': goal,
         'sum': sum_,
     }
+
+    available_status_codes = list(map(lambda t: t[0], conversion_statuses))
+    if status in available_status_codes:
+        data.update({'status': status})
+
     conversion.delay(data)
 
     return HttpResponse("Conversion logged")

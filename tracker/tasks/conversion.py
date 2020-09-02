@@ -1,5 +1,10 @@
 from project._celery import _celery
-from tracker.models import Click, Conversion, APPROVED_STATUS, REJECTED_STATUS
+from tracker.models import (
+    Click,
+    Conversion,
+    HOLD_STATUS,
+    REJECTED_STATUS,
+)
 from offer.models import Payout
 
 
@@ -31,9 +36,14 @@ def conversion(data):
     if payout:
         conversion.revenue = payout.revenue
         conversion.payout = payout.payout
-        conversion.status = APPROVED_STATUS
         conversion.goal = payout.goal
         conversion.currency = payout.currency
+
+        if data.get('status'):
+            conversion.status = data.get('status')
+        else:
+            conversion.status = HOLD_STATUS
+
         if duplicate:
             conversion.status = REJECTED_STATUS
             conversion.comment = 'Duplicate Click ID'
