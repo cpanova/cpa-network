@@ -28,7 +28,9 @@ class PayoutCreateView(APIView):
     permission_classes = (IsAuthenticated, IsSuperUser,)
 
     def post(self, request, pk):
-        serializer = PayoutCreationSerializer(data=dict(request.data, offer=pk))
+        serializer = PayoutCreationSerializer(
+            data=dict(request.data, offer=pk)
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

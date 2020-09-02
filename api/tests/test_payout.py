@@ -19,7 +19,9 @@ class PayoutTestCase(APITestCase):
         Offer.objects.create(id=1, title='a', description='a')
         Currency.objects.create(id=1, code='USD', name='US Dollar')
         Goal.objects.create(id=1, name='Reg')
-        Country.objects.create(iso='RU', iso3='RUS', iso_numeric=1, name='Russia')
+        Country.objects.create(
+            iso='RU', iso3='RUS', iso_numeric=1, name='Russia'
+        )
 
     def test_create(self):
         data = {

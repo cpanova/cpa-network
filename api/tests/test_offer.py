@@ -15,7 +15,9 @@ class OfferTestCase(APITestCase):
         self.user = get_user_model().objects.create_user(
             id=1, is_staff=True, is_superuser=True, **credentials)
         self.client.login(**credentials)
-        Country.objects.create(iso='RU', iso3='RUS', iso_numeric=1, name='Russia')
+        Country.objects.create(
+            iso='RU', iso3='RUS', iso_numeric=1, name='Russia'
+        )
 
     def test_create(self):
         data = {
