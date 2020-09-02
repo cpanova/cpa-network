@@ -3,6 +3,7 @@ from .views.conversions import ConversionCreateView
 from .views.offer import OfferCreateView
 from .views.payout import PayoutCreateView
 from .views.landing import LandingCreateView
+from .views.offer_traffic_source import OfferTrafficSourceCreateView
 
 
 urlpatterns = [
@@ -18,4 +19,8 @@ urlpatterns = [
     path(
         'offers/<int:pk>/landings/',
         LandingCreateView.as_view(), name='api-landings'),
+    path(
+        'offers/<int:pk>/traffic-sources/',
+        OfferTrafficSourceCreateView.as_view(),
+        name='api-offer-traffic-sources'),
 ]
