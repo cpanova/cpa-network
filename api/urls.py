@@ -4,7 +4,7 @@ from .views.offer import OfferCreateView
 from .views.payout import PayoutCreateView
 from .views.landing import LandingCreateView
 from .views.offer_traffic_source import OfferTrafficSourceCreateView
-
+from .views.advertiser import AdvertiserCreateAPIView
 
 urlpatterns = [
     path(
@@ -23,4 +23,7 @@ urlpatterns = [
         'offers/<int:pk>/traffic-sources/',
         OfferTrafficSourceCreateView.as_view(),
         name='api-offer-traffic-sources'),
+    path(
+        'advertisers/',
+        AdvertiserCreateAPIView.as_view(), name='api-advertisers'),
 ]
