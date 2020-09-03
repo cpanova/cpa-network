@@ -9,6 +9,7 @@ from tracker.models import Click, Conversion
 
 class StatsTestCase(APITestCase):
     offers_stats_url = '/affiliate/stats/offers/'
+    goal_stats_url = '/affiliate/stats/by-goal/'
     daily_stats_url = '/affiliate/stats/daily/'
 
     def setUp(self):
@@ -69,6 +70,20 @@ class StatsTestCase(APITestCase):
         self.assertIn('hold_qty', response.data[0])
         self.assertIn('rejected_qty', response.data[0])
         self.assertIn('cr', response.data[0])
+        self.assertIn('approved_payout', response.data[0])
+        self.assertIn('hold_payout', response.data[0])
+        self.assertIn('rejected_payout', response.data[0])
+        self.assertIn('total_payout', response.data[0])
+
+    def test_goal_stats(self):
+        response = self.client.get(self.goal_stats_url)
+        self.assertEqual(200, response.status_code)
+        self.assertIn('goal_id', response.data[0])
+        self.assertIn('goal_name', response.data[0])
+        self.assertIn('total_qty', response.data[0])
+        self.assertIn('approved_qty', response.data[0])
+        self.assertIn('hold_qty', response.data[0])
+        self.assertIn('rejected_qty', response.data[0])
         self.assertIn('approved_payout', response.data[0])
         self.assertIn('hold_payout', response.data[0])
         self.assertIn('rejected_payout', response.data[0])

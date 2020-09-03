@@ -3,7 +3,7 @@ from django.urls import path
 from .views.profile import AffiliateRetrieveAPIView
 from .views.register import CreateUserView
 from .views.offers import OfferListView, OfferRetrieveView, TrackingLinkView
-from .views.stats import DailyStatsView, OffersStatsView
+from .views.stats import DailyStatsView, OffersStatsView, GoalStatsView
 from .views.conversions import ConversionListView
 
 
@@ -31,4 +31,7 @@ urlpatterns = [
     path(
         'conversions/',
         ConversionListView.as_view(), name='affiliate-conversions'),
+    path(
+        'stats/by-goal/',
+        GoalStatsView.as_view(), name='affiliate-stats-by-goal'),
 ]
