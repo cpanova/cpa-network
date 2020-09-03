@@ -19,7 +19,7 @@ class Offer(models.Model):
         ordering = ('-id',)
 
     title = models.CharField(max_length=256, default='')
-    description = models.TextField(default='')
+    description = models.TextField(blank=True, default='')
     description_html = tinymce_models.HTMLField(default='', blank=True)
     tracking_link = models.CharField(max_length=1024, default='')
     preview_link = models.CharField(max_length=1024, default='')
