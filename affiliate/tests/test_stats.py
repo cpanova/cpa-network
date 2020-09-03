@@ -11,6 +11,7 @@ class StatsTestCase(APITestCase):
     offers_stats_url = '/affiliate/stats/offers/'
     goal_stats_url = '/affiliate/stats/by-goal/'
     daily_stats_url = '/affiliate/stats/daily/'
+    sub_stats_url = '/affiliate/stats/by-sub/1/?offer_id=1'
 
     def setUp(self):
         super(StatsTestCase, self).setUp()
@@ -21,6 +22,7 @@ class StatsTestCase(APITestCase):
         self.user = get_user_model().objects.create_user(**credentials)
         self.client.login(**credentials)
         self.offer = Offer.objects.create(
+            id=1,
             title='blabla',
             description='blabla'
         )
@@ -84,6 +86,21 @@ class StatsTestCase(APITestCase):
         self.assertIn('approved_qty', response.data[0])
         self.assertIn('hold_qty', response.data[0])
         self.assertIn('rejected_qty', response.data[0])
+        self.assertIn('approved_payout', response.data[0])
+        self.assertIn('hold_payout', response.data[0])
+        self.assertIn('rejected_payout', response.data[0])
+        self.assertIn('total_payout', response.data[0])
+
+    def test_sub_stats(self):
+        response = self.client.get(self.sub_stats_url)
+        self.assertEqual(200, response.status_code)
+        self.assertIn('sub', response.data[0])
+        self.assertIn('clicks', response.data[0])
+        self.assertIn('total_qty', response.data[0])
+        self.assertIn('approved_qty', response.data[0])
+        self.assertIn('hold_qty', response.data[0])
+        self.assertIn('rejected_qty', response.data[0])
+        self.assertIn('cr', response.data[0])
         self.assertIn('approved_payout', response.data[0])
         self.assertIn('hold_payout', response.data[0])
         self.assertIn('rejected_payout', response.data[0])
