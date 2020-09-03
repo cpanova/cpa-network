@@ -31,4 +31,6 @@ class TestClickTask(TestCase):
             'sub5': ''
         }
         click(data)
-        Click.objects.get(pk=click_id)
+        cl = Click.objects.get(pk=click_id)
+        self.assertTrue(Click.objects.count())
+        self.assertEquals(cl.country, 'US')
