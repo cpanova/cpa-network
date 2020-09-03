@@ -22,6 +22,7 @@ class OfferCreationSerializer(serializers.ModelSerializer):
             # 'traffic_sources',
             'status',
             'advertiser',
+            'icon',
         )
 
 
