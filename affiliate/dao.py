@@ -61,7 +61,7 @@ def _daily_report_sql(
                 GROUP BY day
             ) AS cv
         ON cl.day = cv.day
-        ORDER BY cl.day ASC)
+        ORDER BY cl.day DESC)
     ;
     """
 
