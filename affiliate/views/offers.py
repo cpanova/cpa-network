@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from countries_plus.models import Country
 from django.conf import settings
 from offer.models import (
@@ -128,8 +129,10 @@ class OfferListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = OfferSerializer
     queryset = Offer.objects
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     filterset_class = OfferFilterSet
+    search_fields = ['=id', 'title']
+    ordering_fields = ['id', 'title']
 
 
 class OfferRetrieveView(generics.RetrieveAPIView):
