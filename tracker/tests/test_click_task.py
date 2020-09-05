@@ -4,6 +4,7 @@ from ..tasks.click import click
 from ..models import Click
 from django.contrib.auth import get_user_model
 from offer.models import Offer
+from user_profile.models import Profile
 
 
 class TestClickTask(TestCase):
@@ -14,6 +15,11 @@ class TestClickTask(TestCase):
             get_user_model().objects
             .create_user(username='aff', password='1234')
         )
+        manager = (
+            get_user_model().objects
+            .create_user(username='manager', password='1234')
+        )
+        Profile.objects.create(id=100, user=self.user, manager=manager)
         self.offer = Offer.objects.create(title='blabla', description='blabla')
 
     def test_click_create(self):
@@ -34,3 +40,4 @@ class TestClickTask(TestCase):
         cl = Click.objects.get(pk=click_id)
         self.assertTrue(Click.objects.count())
         self.assertEquals(cl.country, 'US')
+        self.assertEquals(cl.affiliate_manager_id, 100)
