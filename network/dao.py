@@ -296,7 +296,7 @@ def _affiliate_report_sql(
     SELECT
         report.affiliate_id,
         u.email,
-        COALESCE(report.clicks,
+        COALESCE(report.clicks, 0),
 
         COALESCE(report.approved_qty, 0),
         COALESCE(report.approved_revenue, 0),
@@ -314,7 +314,7 @@ def _affiliate_report_sql(
     FROM
         (
             SELECT
-                COALESCE(cl.affiliate_id, cv.affiliate_id) as affiliate_id
+                COALESCE(cl.affiliate_id, cv.affiliate_id) as affiliate_id,
                 cl.clicks,
                 cv.approved_qty,
                 cv.approved_revenue,
@@ -329,7 +329,7 @@ def _affiliate_report_sql(
                 cv.total_qty,
                 cv.total_revenue,
                 cv.total_payout,
-                cv.total_revenue - cv.total_payout as total_profit
+                (cv.total_revenue - cv.total_payout) as total_profit
             FROM
                 (
                     SELECT
