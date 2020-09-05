@@ -13,22 +13,24 @@ def _daily_report_sql(
 
     sql = f"""
     SELECT
-        cl.day,
-        cl.clicks,
-        cv.approved_qty,
-        cv.approved_revenue,
-        cv.hold_qty,
-        cv.hold_revenue,
-        cv.rejected_qty,
-        cv.rejected_revenue,
-        case cl.clicks
-            when 0 then 0  -- avoid divizion by zero
-            else (100 * cv.total_qty / cl.clicks)
-        end AS cr,
-        cv.total_qty,
-        cv.total_revenue,
-        cv.total_payout,
-        cv.total_revenue - cv.total_payout as total_profit
+        COALESCE(cl.day, cv.day),
+        COALESCE(cl.clicks, 0),
+        COALESCE(cv.approved_qty, 0),
+        COALESCE(cv.approved_revenue, 0),
+        COALESCE(cv.hold_qty, 0),
+        COALESCE(cv.hold_revenue, 0),
+        COALESCE(cv.rejected_qty, 0),
+        COALESCE(cv.rejected_revenue, 0),
+        COALESCE(
+            case cl.clicks
+                when 0 then 0  -- avoid divizion by zero
+                else (100 * cv.total_qty / cl.clicks)
+            end
+            , 0) AS cr,
+        COALESCE(cv.total_qty, 0),
+        COALESCE(cv.total_revenue, 0),
+        COALESCE(cv.total_payout, 0),
+        COALESCE(cv.total_revenue - cv.total_payout, 0) as total_profit
     FROM
         (
             SELECT
@@ -36,8 +38,7 @@ def _daily_report_sql(
                 count(*) AS clicks
             FROM tracker_click
             WHERE
-                -- affiliate_id = {user_id}
-                TRUE
+                affiliate_manager_id = {user_id}
                 AND created_at between '{start_date}' AND '{end_date}'
                 {offer_filter_clause}
             GROUP BY day
@@ -49,22 +50,21 @@ def _daily_report_sql(
                 count(*)         AS total_qty,
                 sum(payout)      AS total_payout,
                 sum(revenue)     AS total_revenue,
-                count(*)     FILTER (WHERE status = 'Approved') AS approved_qty,
-                sum(revenue) FILTER (WHERE status = 'Approved') AS approved_revenue,
-                count(*)     FILTER (WHERE status = 'Hold') AS hold_qty,
-                sum(revenue) FILTER (WHERE status = 'Hold') AS hold_revenue,
-                count(*)     FILTER (WHERE status = 'Rejected') AS rejected_qty,
-                sum(revenue) FILTER (WHERE status = 'Rejected') AS rejected_revenue
+                count(*)     FILTER (WHERE status = 'approved') AS approved_qty,
+                sum(revenue) FILTER (WHERE status = 'approved') AS approved_revenue,
+                count(*)     FILTER (WHERE status = 'hold') AS hold_qty,
+                sum(revenue) FILTER (WHERE status = 'hold') AS hold_revenue,
+                count(*)     FILTER (WHERE status = 'rejected') AS rejected_qty,
+                sum(revenue) FILTER (WHERE status = 'rejected') AS rejected_revenue
             FROM tracker_conversion
             WHERE
-                -- affiliate_id = {user_id}
-                TRUE
+                affiliate_manager_id = {user_id}
                 AND created_at between '{start_date}' AND '{end_date}'
                 {offer_filter_clause}
             GROUP BY day
         ) AS cv
     ON cl.day = cv.day
-    ORDER BY cl.day ASC
+    ORDER BY cl.day DESC
     ;
     """
 
@@ -180,26 +180,26 @@ def _offer_report_sql(
     SELECT
         report.offer_id,
         o.title,
-        report.clicks,
+        COALESCE(report.clicks, 0),
 
-        report.approved_qty,
-        report.approved_revenue,
-        report.hold_qty,
-        report.hold_revenue,
-        report.rejected_qty,
-        report.rejected_revenue,
+        COALESCE(report.approved_qty, 0),
+        COALESCE(report.approved_revenue, 0),
+        COALESCE(report.hold_qty, 0),
+        COALESCE(report.hold_revenue, 0),
+        COALESCE(report.rejected_qty, 0),
+        COALESCE(report.rejected_revenue, 0),
 
-        report.cr,
+        COALESCE(report.cr, 0),
 
-        report.total_qty,
-        report.total_revenue,
-        report.total_payout,
-        report.total_profit
+        COALESCE(report.total_qty, 0),
+        COALESCE(report.total_revenue, 0),
+        COALESCE(report.total_payout, 0),
+        COALESCE(report.total_profit, 0)
 
     FROM
         (
             SELECT
-                cl.offer_id,
+                COALESCE(cl.offer_id, cv.offer_id) as offer_id,
                 cl.clicks,
                 cv.approved_qty,
                 cv.approved_revenue,
@@ -222,8 +222,7 @@ def _offer_report_sql(
                         count(*) as clicks
                     FROM tracker_click
                     WHERE
-                        -- affiliate_id = {user_id}
-                        TRUE
+                        affiliate_manager_id = {user_id}
                         AND created_at between '{start_date}' AND '{end_date}'
                     GROUP BY offer_id
                 ) AS cl
@@ -234,16 +233,15 @@ def _offer_report_sql(
                         count(*)         AS total_qty,
                         sum(payout)      AS total_payout,
                         sum(revenue)     AS total_revenue,
-                        count(*)     FILTER (WHERE status = 'Approved') AS approved_qty,
-                        sum(revenue) FILTER (WHERE status = 'Approved') AS approved_revenue,
-                        count(*)     FILTER (WHERE status = 'Hold') AS hold_qty,
-                        sum(revenue) FILTER (WHERE status = 'Hold') AS hold_revenue,
-                        count(*)     FILTER (WHERE status = 'Rejected') AS rejected_qty,
-                        sum(revenue) FILTER (WHERE status = 'Rejected') AS rejected_revenue
+                        count(*)     FILTER (WHERE status = 'approved') AS approved_qty,
+                        sum(revenue) FILTER (WHERE status = 'approved') AS approved_revenue,
+                        count(*)     FILTER (WHERE status = 'hold') AS hold_qty,
+                        sum(revenue) FILTER (WHERE status = 'hold') AS hold_revenue,
+                        count(*)     FILTER (WHERE status = 'rejected') AS rejected_qty,
+                        sum(revenue) FILTER (WHERE status = 'rejected') AS rejected_revenue
                     FROM tracker_conversion
                     WHERE
-                        -- affiliate_id = {user_id}
-                        TRUE
+                        affiliate_manager_id = {user_id}
                         AND created_at between '{start_date}' AND '{end_date}'
                     GROUP BY offer_id
                 ) AS cv
@@ -298,25 +296,25 @@ def _affiliate_report_sql(
     SELECT
         report.affiliate_id,
         u.email,
-        report.clicks,
+        COALESCE(report.clicks,
 
-        report.approved_qty,
-        report.approved_revenue,
-        report.hold_qty,
-        report.hold_revenue,
-        report.rejected_qty,
-        report.rejected_revenue,
+        COALESCE(report.approved_qty, 0),
+        COALESCE(report.approved_revenue, 0),
+        COALESCE(report.hold_qty, 0),
+        COALESCE(report.hold_revenue, 0),
+        COALESCE(report.rejected_qty, 0),
+        COALESCE(report.rejected_revenue, 0),
 
-        report.cr,
+        COALESCE(report.cr, 0),
 
-        report.total_qty,
-        report.total_revenue,
-        report.total_payout,
-        report.total_profit
+        COALESCE(report.total_qty, 0),
+        COALESCE(report.total_revenue, 0),
+        COALESCE(report.total_payout, 0),
+        COALESCE(report.total_profit, 0)
     FROM
         (
             SELECT
-                cl.affiliate_id,
+                COALESCE(cl.affiliate_id, cv.affiliate_id) as affiliate_id
                 cl.clicks,
                 cv.approved_qty,
                 cv.approved_revenue,
@@ -350,12 +348,12 @@ def _affiliate_report_sql(
                         count(*)         AS total_qty,
                         sum(payout)      AS total_payout,
                         sum(revenue)     AS total_revenue,
-                        count(*)     FILTER (WHERE status = 'Approved') AS approved_qty,
-                        sum(revenue) FILTER (WHERE status = 'Approved') AS approved_revenue,
-                        count(*)     FILTER (WHERE status = 'Hold') AS hold_qty,
-                        sum(revenue) FILTER (WHERE status = 'Hold') AS hold_revenue,
-                        count(*)     FILTER (WHERE status = 'Rejected') AS rejected_qty,
-                        sum(revenue) FILTER (WHERE status = 'Rejected') AS rejected_revenue
+                        count(*)     FILTER (WHERE status = 'approved') AS approved_qty,
+                        sum(revenue) FILTER (WHERE status = 'approved') AS approved_revenue,
+                        count(*)     FILTER (WHERE status = 'hold') AS hold_qty,
+                        sum(revenue) FILTER (WHERE status = 'hold') AS hold_revenue,
+                        count(*)     FILTER (WHERE status = 'rejected') AS rejected_qty,
+                        sum(revenue) FILTER (WHERE status = 'rejected') AS rejected_revenue
                     FROM tracker_conversion
                     WHERE
                         affiliate_manager_id = {user_id}
