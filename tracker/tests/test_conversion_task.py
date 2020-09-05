@@ -14,8 +14,9 @@ class TestConversionTask(TestCase):
             get_user_model().objects
             .create_user(username='aff', password='1234')
         )
-        self.offer = Offer.objects.create(id=1, title='blabla', description='blabla')
-
+        self.offer = Offer.objects.create(
+            id=1, title='blabla', description='blabla'
+        )
 
     def test_conversion_create(self):
         cl = Click.objects.create(

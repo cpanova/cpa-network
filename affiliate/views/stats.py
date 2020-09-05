@@ -114,6 +114,9 @@ class SubStatsView(APIView):
         start_datetime = datetime.combine(start_date, time.min)
         end_datetime = datetime.combine(end_date, time.max)
 
-        data = report_bysub(sub, offer_id, request.user.id, start_datetime, end_datetime)
+        data = report_bysub(
+            sub, offer_id, request.user.id,
+            start_datetime, end_datetime
+        )
 
         return Response(data)
