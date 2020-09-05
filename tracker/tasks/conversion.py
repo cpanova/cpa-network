@@ -58,6 +58,7 @@ def conversion(data):
 
     conversion.offer_id = click.offer.id
     conversion.affiliate_id = click.affiliate.id
+    conversion.affiliate_manager = click.affiliate.profile.manager
     conversion.sub1 = click.sub1
     conversion.sub2 = click.sub2
     conversion.sub3 = click.sub3
