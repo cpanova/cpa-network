@@ -105,74 +105,6 @@ def daily_report(
     return data
 
 
-# def _ext_daily_report_sql(
-#         user_id: int, start_date: datetime, end_date: datetime) -> str:
-
-#     sql = f"""
-#     SELECT
-#         cl.day,
-#         cl.clicks,
-#         cv.registrations,
-#         cv.deposits,
-#         cv.deposits_sum,
-#         cv.baselines,
-#         case cl.clicks
-#             when 0 then 0  -- avoid divizion by zero
-#             else (100 * cv.conversions / cl.clicks)
-#         end AS cr,
-#         cv.payout
-#     FROM
-#         (
-#             SELECT
-#                 created_at::date AS day,
-#                 count(*) AS clicks
-#             FROM tracker_click
-#             WHERE
-#                 affiliate_id = {user_id}
-#                 AND created_at between '{start_date}' AND '{end_date}'
-#             GROUP BY day
-#         ) AS cl
-#     FULL OUTER JOIN
-#         (
-#             SELECT
-#                 created_at::date AS day,
-#                 count(*) FILTER (WHERE goal='1') AS registrations,
-#                 count(*) FILTER (WHERE goal='2') AS deposits,
-#                 sum(tracker_conversion.sum) FILTER (WHERE goal='2') AS deposits_sum,
-#                 count(*) FILTER (WHERE goal='3') AS baselines,
-#                 count(*) AS conversions,
-#                 sum(payout) AS payout
-#             FROM tracker_conversion
-#             WHERE
-#                 affiliate_id = {user_id}
-#                 AND created_at between '{start_date}' AND '{end_date}'
-#             GROUP BY day
-#         ) AS cv
-#     ON cl.day = cv.day
-#     ORDER BY cl.day ASC
-#     ;
-#     """
-
-#     return sql
-
-
-# def ext_daily_report(
-#         user_id: int, start_date: datetime, end_date: datetime) -> list:
-
-#     sql = _ext_daily_report_sql(user_id, start_date, end_date)
-
-#     colnames = [
-#         'day', 'clicks', 'registrations', 'deposits', 'deposits_sum',
-#         'baselines', 'cr', 'payout']
-
-#     with connection.cursor() as cursor:
-#         cursor.execute(sql)
-#         data = cursor.fetchall()
-#         data = [dict(zip(colnames, row)) for row in data]
-
-#     return data
-
-
 def _offer_report_sql(
         user_id: int, start_date: datetime, end_date: datetime) -> str:
 
@@ -260,7 +192,7 @@ def offer_report(
 
     colnames = [
         'offer_id',
-        'offer_name',
+        'offer_title',
 
         'clicks',
 
