@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import get_user_model
 from tracker.models import Conversion, conversion_statuses
 from ..permissions import IsSuperUser
 from offer.models import Currency, Goal
@@ -71,6 +72,13 @@ class ConversionCreateView(APIView):
                 "Required 'pid'",
                 rest_framework.HTTP_400_BAD_REQUEST
             )
+        try:
+            usr = get_user_model().objects.get(pk=affiliate_id)
+        except get_user_model().DoesNotExist:
+            return Response(
+                "Affiliate does not exist",
+                rest_framework.HTTP_400_BAD_REQUEST
+            )
         status = request.data.get('status')
         if status and status not in map(lambda r: r[0], conversion_statuses):
             return Response(
@@ -85,6 +93,7 @@ class ConversionCreateView(APIView):
         conversion = Conversion()
         conversion.offer_id = offer_id
         conversion.affiliate_id = affiliate_id
+        conversion.affiliate_manager = usr.profile.manager
         if request.data.get('goal'):
             conversion.goal_value = request.data.get('goal')
         if request.data.get('revenue'):
