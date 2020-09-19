@@ -100,6 +100,8 @@ class ConversionCreateView(APIView):
             conversion.revenue = request.data.get('revenue')
         if request.data.get('payout'):
             conversion.payout = request.data.get('payout')
+        if request.data.get('sub1'):
+            conversion.sub1 = request.data.get('sub1')
         if currency:
             conversion.currency = currency
         if status:
