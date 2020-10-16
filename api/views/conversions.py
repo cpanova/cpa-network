@@ -70,20 +70,20 @@ class ConversionCreateView(APIView):
         if not affiliate_id:
             return Response(
                 "Required 'pid'",
-                rest_framework.HTTP_400_BAD_REQUEST
+                rest_framework.status.HTTP_400_BAD_REQUEST
             )
         try:
             usr = get_user_model().objects.get(pk=affiliate_id)
         except get_user_model().DoesNotExist:
             return Response(
                 "Affiliate does not exist",
-                rest_framework.HTTP_400_BAD_REQUEST
+                rest_framework.status.HTTP_400_BAD_REQUEST
             )
         status = request.data.get('status')
         if status and status not in map(lambda r: r[0], conversion_statuses):
             return Response(
                 "Wrong status value",
-                rest_framework.HTTP_400_BAD_REQUEST
+                rest_framework.status.HTTP_400_BAD_REQUEST
             )
         currency_code = request.data.get('currency')
         currency = None
