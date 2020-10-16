@@ -25,7 +25,12 @@ pytest:
 
 .PHONY: test
 test:
-	docker-compose run --rm web python -Wa manage.py test
+	docker-compose run --rm web python manage.py test
+
+
+.PHONY: mypy
+mypy:
+	docker-compose run --rm web mypy .
 
 
 .PHONY: psql
