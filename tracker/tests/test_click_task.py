@@ -15,19 +15,20 @@ class TestClickTask(TestCase):
             get_user_model().objects
             .create_user(username='aff', password='1234')
         )
-        manager = (
+        self.manager = (
             get_user_model().objects
             .create_user(username='manager', password='1234')
         )
-        Profile.objects.create(id=100, user=self.user, manager=manager)
+        self.user.profile.manager = self.manager
+        self.user.profile.save()
         self.offer = Offer.objects.create(title='blabla', description='blabla')
 
     def test_click_create(self):
         click_id = uuid.uuid4()
         data = {
             'click_id': click_id,
-            'offer_id': self.offer.id,
-            'pid': self.user.id,
+            'offer_id': self.offer.pk,
+            'pid': self.user.pk,
             'ip': '4.4.4.4',
             'ua': 'Mozilla /5.0',
             'sub1': '',
@@ -40,4 +41,4 @@ class TestClickTask(TestCase):
         cl = Click.objects.get(pk=click_id)
         self.assertTrue(Click.objects.count())
         self.assertEquals(cl.country, 'US')
-        self.assertEquals(cl.affiliate_manager_id, 100)
+        self.assertEquals(cl.affiliate_manager_id, self.manager.pk)
