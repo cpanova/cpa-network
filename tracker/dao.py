@@ -2,6 +2,7 @@ import json
 import redis
 from offer.models import Payout
 from project.redis_conn import pool
+from typing import Optional, Dict
 
 
 def any(predicate, collection):
@@ -40,7 +41,7 @@ def find_payout(offer_id: int, country: str, goal: str) -> Payout:
 class TrackerCache(object):
 
     @staticmethod
-    def get_offer(id: int) -> dict:
+    def get_offer(id: int) -> Optional[Dict]:
         redis_conn = redis.Redis(connection_pool=pool)
         resp = redis_conn.get(f"offers:{id}")
         if resp:

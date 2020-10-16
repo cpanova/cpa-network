@@ -1,10 +1,11 @@
-import datetime
+from datetime import datetime
+from typing import List, Dict, Any
 from django.db import connection
 
 
 def _daily_report_sql(
         user_id: int, start_date: datetime, end_date: datetime,
-        offer_id: int = None) -> str:
+        offer_id: int = 0) -> str:
 
     offer_filter_clause = ""
 
@@ -70,7 +71,7 @@ def _daily_report_sql(
 
 def daily_report(
         user_id: int, start_date: datetime, end_date: datetime,
-        offer_id: int = None) -> list:
+        offer_id: int = 0) -> list:
 
     sql = _daily_report_sql(user_id, start_date, end_date, offer_id)
 
@@ -174,7 +175,7 @@ def _offer_report_sql(
 
 
 def offer_report(
-        user_id: int, start_date: datetime, end_date: datetime) -> list:
+        user_id: int, start_date: datetime, end_date: datetime) -> List[Dict[str, Any]]:
 
     colnames = [
         'offer_id',

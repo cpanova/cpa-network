@@ -1,13 +1,28 @@
 import uuid
+from typing import Dict, NamedTuple, Any
 from django.shortcuts import redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from tracker.tasks.click import click as click_task
 from tracker.tasks.conversion import conversion
 from tracker.dao import TrackerCache
 from .models import conversion_statuses
 
 
-def get_client_ip(request):
+# class ClickData(NamedTuple):
+#     click_id: str
+#     offer_id: int
+#     pid: int
+#     ip: str
+#     ua: str
+#     sub1: str
+#     sub2: str
+#     sub3: str
+#     sub4: str
+#     sub5: str
+#     fb_id: str
+
+
+def get_client_ip(request: HttpRequest) -> str:
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -16,11 +31,11 @@ def get_client_ip(request):
     return ip
 
 
-def replace_macro(url: str, context: dict) -> str:
+def replace_macro(url: str, context: Dict[str, Any]) -> str:
     url = url.replace('{click_id}', context['click_id'])
     url = url.replace('{clickid}', context['click_id'])
     url = url.replace('{pid}', context['pid'])
-    # url = url.replace('{ref_code}', str(context['ref_code']))
+    url = url.replace('{fb_id}', context['fb_id'])
     return url
 
 
@@ -54,6 +69,7 @@ def click(request):
     context = {
         'click_id': click_id,
         'pid': pid,
+        'fb_id': request.GET.get('fb_id', ""),
     }
     url = replace_macro(offer_data['tracking_link'], context)
 

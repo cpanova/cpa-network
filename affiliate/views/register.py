@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 
 
-def check_username_exists(username):
+def check_username_exists(username: str) -> bool:
     try:
         get_user_model().objects.get(username=username)
     except get_user_model().DoesNotExist:
