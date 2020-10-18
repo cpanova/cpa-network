@@ -1,5 +1,5 @@
 import uuid
-from typing import Dict, NamedTuple, Any
+from typing import Dict, Any
 from django.shortcuts import redirect
 from django.http import HttpResponse, HttpRequest
 from tracker.tasks.click import click as click_task

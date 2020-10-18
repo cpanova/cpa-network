@@ -4,7 +4,6 @@ from ..tasks.click import click
 from ..models import Click
 from django.contrib.auth import get_user_model
 from offer.models import Offer
-from user_profile.models import Profile
 
 
 class TestClickTask(TestCase):
