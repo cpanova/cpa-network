@@ -15,11 +15,18 @@ def conversion(data):
     except Click.DoesNotExist:
         return f"Click not found. click_id: {data['click_id']}"
 
-    duplicate = bool(
+    existing_conversion = (
         Conversion.objects
         .filter(click_id=click.id, goal_value=data['goal'])
-        .count()
+        .first()
     )
+    if existing_conversion and data.get('status'):
+        if existing_conversion.status == HOLD_STATUS:
+            existing_conversion.status = data.get('status')
+            existing_conversion.save()
+            return f"Processed conversion for click_id: {data['click_id']}"
+
+    duplicate = bool(existing_conversion)
 
     conversion = Conversion()
 
