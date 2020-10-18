@@ -44,10 +44,12 @@ class Click(models.Model):
 APPROVED_STATUS = 'approved'
 HOLD_STATUS = 'hold'
 REJECTED_STATUS = 'rejected'
+PENDING_STATUS = 'pending'
 conversion_statuses = (
     (APPROVED_STATUS, 'Approved',),
     (HOLD_STATUS, 'Hold',),
     (REJECTED_STATUS, 'Rejected',),
+    (PENDING_STATUS, 'Pending',),
 )
 
 
