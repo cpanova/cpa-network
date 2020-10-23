@@ -109,3 +109,5 @@ volumes
 
 # Project settings
 /project/settings/local.py
+
+sandbox
