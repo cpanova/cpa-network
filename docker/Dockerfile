@@ -10,6 +10,8 @@ RUN pip install -r requirements.dev.txt
 
 COPY . .
 
+ENV PYTHONPATH /app
+
 EXPOSE 80
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
