@@ -1,7 +1,9 @@
 from geolite2 import geolite2
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from project._celery import _celery
 from tracker.models import Click
+from ext.ipstack import API, Err as IpstackErr
 
 
 def detect_country(ip: str) -> str:
@@ -11,9 +13,18 @@ def detect_country(ip: str) -> str:
     return country
 
 
+def detect_country_service(ip: str) -> str:
+    api = API(token=settings.IPSTACK_TOKEN)
+    try:
+        resp = api.lookup(ip)
+    except IpstackErr:
+        return ''
+    return resp.country_code
+
+
 @_celery.task
 def click(data):
-    country = detect_country(data["ip"])
+    country = detect_country_service(data["ip"])
 
     try:
         user = get_user_model().objects.get(pk=data['pid'])

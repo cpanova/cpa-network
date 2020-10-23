@@ -180,3 +180,5 @@ CORS_ALLOW_METHODS = (
 REDIS_URL = os.environ['REDIS_URL']
 
 TRACKER_URL = os.environ['TRACKER_URL']
+
+IPSTACK_TOKEN = os.environ['IPSTACK_TOKEN']
