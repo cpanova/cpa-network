@@ -26,5 +26,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
+      env:
+        DJ_SECRET_KEY: xxx
+        REDIS_URL: redis://127.0.0.1
+        TRACKER_URL: https://example.com
+        IPSTACK_TOKEN: xxx
       run: |
         python manage.py test
