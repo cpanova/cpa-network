@@ -21,3 +21,4 @@ django-tinymce
 mypy
 django-stubs
 djangorestframework-stubs
+webargs
