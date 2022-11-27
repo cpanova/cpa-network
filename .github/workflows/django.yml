@@ -16,7 +16,9 @@ jobs:
         db: [postgres]
         python-version: ["3.10"]
     
+    
     services:
+      
       postgres:
         image: postgres:10
         env:
@@ -30,7 +32,18 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-    
+      
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -44,8 +57,8 @@ jobs:
     - name: Run Tests
       env:
         DJ_SECRET_KEY: xxx
-        DATABASE_URL: postgresql://postgres:postgres@127.0.0.1/postgres
-        REDIS_URL: redis://127.0.0.1
+        DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
+        REDIS_URL: redis://redis
         TRACKER_URL: https://example.com
         IPSTACK_TOKEN: xxx
       run: |
