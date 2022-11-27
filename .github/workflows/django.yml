@@ -30,6 +30,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
       
       redis:
         # Docker Hub image
@@ -40,6 +42,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 6379:6379
 
 
     steps:
@@ -55,8 +59,8 @@ jobs:
     - name: Run Tests
       env:
         DJ_SECRET_KEY: xxx
-        DATABASE_URL: postgresql://postgres:postgres@postgres/postgres
-        REDIS_URL: redis://redis
+        DATABASE_URL: postgresql://postgres:postgres@127.0.0.1/postgres
+        REDIS_URL: redis://127.0.0.1
         TRACKER_URL: https://example.com
         IPSTACK_TOKEN: xxx
       run: |
