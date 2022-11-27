@@ -22,7 +22,7 @@ services:
       - redis
 
   postgres:
-    image: "postgres:alpine"
+    image: "postgres:12-alpine"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
