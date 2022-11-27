@@ -12,8 +12,8 @@ def find_postbacks(affiliate_id, offer_id=None):
 
 @_celery.task
 def send_postback(conversion):
-    assert(bool(conversion['offer_id']))
-    assert(bool(conversion['affiliate_id']))
+    assert bool(conversion['offer_id'])
+    assert bool(conversion['affiliate_id'])
 
     offer_id = conversion['offer_id']
     affiliate_id = conversion['affiliate_id']
