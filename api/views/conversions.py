@@ -3,8 +3,12 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from webargs import core, fields, ValidationError
+from webargs.djangoparser import parser
 from django.contrib.auth import get_user_model
-from tracker.models import Conversion, conversion_statuses
+from tracker.models import (
+    Conversion, conversion_statuses, REJECTED_STATUS
+)
 from ..permissions import IsSuperUser
 from offer.models import Currency, Goal
 
@@ -56,58 +60,58 @@ class ConversionSerializer(serializers.ModelSerializer):
         )
 
 
+@parser.location_loader('data')
+def parse_data(request, name, field):
+    return core.get_value(request.data, name, field)
+
+
+def user_must_exist_in_db(user_id: int) -> None:
+    try:
+        get_user_model().objects.get(pk=user_id)
+    except get_user_model().DoesNotExist:
+        raise ValidationError("Affiliate does not exist")
+
+
+def status_must_be_known(status: str) -> None:
+    if status and status not in map(lambda r: r[0], conversion_statuses):
+        raise ValidationError("Wrong status value")
+
+
+conversion_create_args = {
+    'offer_id': fields.Int(required=True),
+    'pid': fields.Int(required=True, validate=user_must_exist_in_db),
+    'status': fields.Str(
+        missing=REJECTED_STATUS,
+        validate=status_must_be_known),
+    'currency': fields.Str(missing=''),
+    'goal': fields.Str(missing=''),
+    'revenue': fields.Float(missing=.0),
+    'payout': fields.Float(missing=.0),
+    'sub1': fields.Str(missing=''),
+    'goal_id': fields.Int(missing=None),
+}
+
+
 class ConversionCreateView(APIView):
     permission_classes = (IsAuthenticated, IsSuperUser,)
 
-    def post(self, request):
-        offer_id = request.data.get('offer_id')
-        if not offer_id:
-            return Response(
-                "Required 'offer_id'",
-                rest_framework.status.HTTP_400_BAD_REQUEST
-            )
-        affiliate_id = request.data.get('pid')
-        if not affiliate_id:
-            return Response(
-                "Required 'pid'",
-                rest_framework.status.HTTP_400_BAD_REQUEST
-            )
-        try:
-            usr = get_user_model().objects.get(pk=affiliate_id)
-        except get_user_model().DoesNotExist:
-            return Response(
-                "Affiliate does not exist",
-                rest_framework.status.HTTP_400_BAD_REQUEST
-            )
-        status = request.data.get('status')
-        if status and status not in map(lambda r: r[0], conversion_statuses):
-            return Response(
-                "Wrong status value",
-                rest_framework.status.HTTP_400_BAD_REQUEST
-            )
-        currency_code = request.data.get('currency')
-        currency = None
-        if currency_code:
-            currency = Currency.objects.filter(code=currency_code).first()
+    @parser.use_args(conversion_create_args)
+    def post(self, request, args):
+        usr = get_user_model().objects.get(pk=args['pid'])
 
         conversion = Conversion()
-        conversion.offer_id = offer_id
-        conversion.affiliate_id = affiliate_id
+        conversion.offer_id = args['offer_id']
+        conversion.affiliate_id = args['pid']
         conversion.affiliate_manager = usr.profile.manager
-        if request.data.get('goal'):
-            conversion.goal_value = request.data.get('goal')
-        if request.data.get('revenue'):
-            conversion.revenue = request.data.get('revenue')
-        if request.data.get('payout'):
-            conversion.payout = request.data.get('payout')
-        if request.data.get('sub1'):
-            conversion.sub1 = request.data.get('sub1')
-        if currency:
-            conversion.currency = currency
-        if status:
-            conversion.status = status
-        if request.data.get('goal_id'):
-            conversion.goal_id = request.data.get('goal_id')
+        conversion.goal_value = args['goal']
+        conversion.revenue = args['revenue']
+        conversion.payout = args['payout']
+        conversion.sub1 = args['sub1']
+        conversion.currency = (
+            Currency.objects.filter(code=args['currency']).first())
+        conversion.status = args['status']
+        if args['goal_id']:
+            conversion.goal_id = args['goal_id']
         conversion.save()
 
         return Response(
