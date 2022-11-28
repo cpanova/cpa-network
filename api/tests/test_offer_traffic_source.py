@@ -4,7 +4,7 @@ from offer.models import Offer, TrafficSource
 
 
 class OfferTrafficSourceTestCase(APITestCase):
-    url = '/api/offers/1/traffic-sources/'
+    url = '/api/traffic-sources/'
 
     def setUp(self):
         super(OfferTrafficSourceTestCase, self).setUp()
@@ -20,12 +20,13 @@ class OfferTrafficSourceTestCase(APITestCase):
 
     def test_create(self):
         data = {
-            'traffic_source': 1,
+            'offer_id': 1,
+            'traffic_source_id': 1,
             'allowed': False,
         }
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(201, response.status_code)
 
         offer_traffic_source = response.json()
-        self.assertEqual(offer_traffic_source['traffic_source'], 1)
+        self.assertEqual(offer_traffic_source['traffic_source']['id'], 1)
         self.assertEqual(offer_traffic_source['allowed'], False)

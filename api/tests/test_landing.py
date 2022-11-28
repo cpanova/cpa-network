@@ -4,7 +4,7 @@ from offer.models import Offer
 
 
 class LandingTestCase(APITestCase):
-    url = '/api/offers/1/landings/'
+    url = '/api/landings/'
 
     def setUp(self):
         super(LandingTestCase, self).setUp()
@@ -19,6 +19,7 @@ class LandingTestCase(APITestCase):
 
     def test_create(self):
         data = {
+            'offer_id': 1,
             'name': 'reg',
             'url': 'https://ya.ru',
             'preview_url': '...',

@@ -5,7 +5,7 @@ from offer.models import Offer, Currency, Goal
 
 
 class PayoutTestCase(APITestCase):
-    url = '/api/offers/1/payouts/'
+    url = '/api/payouts/'
 
     def setUp(self):
         super(PayoutTestCase, self).setUp()
@@ -25,10 +25,11 @@ class PayoutTestCase(APITestCase):
 
     def test_create(self):
         data = {
+            'offer_id': 1,
+            'currency_id': 1,
+            'goal_id': 1,
             'revenue': '1.0',
             'payout': '0.8',
-            'currency': 1,
-            'goal': 1,
             'goal_value': '2',
             'countries': ['RU']
         }
