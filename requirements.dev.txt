@@ -1,4 +1,4 @@
-django==3.0.7
+django==3.1.14
 flake8
 psycopg2-binary
 dj-database-url
@@ -21,3 +21,4 @@ django-tinymce
 mypy
 django-stubs
 djangorestframework-stubs
+webargs
