@@ -1,25 +1,10 @@
-# Affiliate Network
+# CPA Network API
 
-## API
+Backend for CPA Network
 
-### Affiliate API
+# Features
 
-- Sign Up, Profile
-- Offers, Tracking Links
+- Affiliate Registration
+- Offer Management
+- Conversion Import
 - Reports
-- Conversions
-
-### Manager API
-
-- Affiliates
-- Offers
-- Reports
-- Conversions
-
-### Admin API
-
-- Offers
-- Landings
-- Payouts
-- Advertisers
-- Conversions
