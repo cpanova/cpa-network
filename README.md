@@ -1,7 +1,14 @@
 [![telegram_badge]][telegram_link]
 
+<div align="center">
+  <p align="center">
+    <a href="https://github.com/cpanova/cpa-network/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/cpanova/cpa-network/issues">Request Feature</a>
+  </p>
+</div>
 
-# CPA Network API
+# About
 
 Backend for CPA Network
 
