@@ -12,6 +12,8 @@
 
 Backend for CPA Network
 
+Keywords: Affiliate Tracking Software, CPA Platform, Affiliate Management Platform
+
 # Features
 
 - Affiliate Registration
