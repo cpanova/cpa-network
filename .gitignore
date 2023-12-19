@@ -85,7 +85,6 @@ celerybeat.pid
 env/
 venv/
 ENV/
-.env*
 
 # Spyder project settings
 .spyderproject

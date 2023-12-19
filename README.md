@@ -26,3 +26,14 @@ Keywords: Affiliate Tracking Software, CPA Platform, Affiliate Management Platfo
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [telegram_badge]: https://img.shields.io/badge/telegram-252850?style=plastic&logo=telegram
 [telegram_link]: https://t.me/bloogrox
+
+# Development
+
+- Copy `project/settings/local.dist.py` to `project/settings/local.py`
+- Copy `.env.dist` to `.env`
+
+```
+docker compose up
+```
+
+open http://0.0.0.0:8000
