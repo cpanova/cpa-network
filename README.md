@@ -36,4 +36,6 @@ Keywords: Affiliate Tracking Software, CPA Platform, Affiliate Management Platfo
 docker compose up
 ```
 
-open http://0.0.0.0:8000
+django admin: http://0.0.0.0:8000/admin/login/
+
+API spec: http://0.0.0.0:8000/api/
