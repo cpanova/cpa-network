@@ -70,4 +70,4 @@ class TestConversionTask(TestCase):
             Conversion.objects
             .filter(click_id=cl.id)
             .first())
-        self.assertEquals(cv.status, 'approved')
+        self.assertEqual(cv.status, 'approved')

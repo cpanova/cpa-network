@@ -39,5 +39,5 @@ class TestClickTask(TestCase):
         click(data)
         cl = Click.objects.get(pk=click_id)
         self.assertTrue(Click.objects.count())
-        self.assertEquals(cl.country, 'US')
-        self.assertEquals(cl.affiliate_manager_id, self.manager.pk)
+        self.assertEqual(cl.country, 'US')
+        self.assertEqual(cl.affiliate_manager_id, self.manager.pk)
