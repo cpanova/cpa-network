@@ -10,6 +10,8 @@
 
 # About
 
+![](docs/api-spec.png)
+
 Backend for CPA Network
 
 Keywords: Affiliate Tracking Software, CPA Platform, Affiliate Management Platform
@@ -26,6 +28,10 @@ Keywords: Affiliate Tracking Software, CPA Platform, Affiliate Management Platfo
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [telegram_badge]: https://img.shields.io/badge/telegram-252850?style=plastic&logo=telegram
 [telegram_link]: https://t.me/bloogrox
+
+# Documentation
+
+[API Documentation](https://cpanova.github.io/cpa-network/index.html)
 
 # Development
 
