@@ -6,6 +6,7 @@ django-filter
 djangorestframework
 djangorestframework-jwt
 django-cors-headers
+drf-spectacular
 PyYAML
 whitenoise
 django-rest-swagger

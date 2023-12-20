@@ -13,20 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from rest_framework.documentation import include_docs_urls
 from rest_framework_jwt.views import obtain_jwt_token
 from django.contrib import admin
 from django.urls import path, include
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include_docs_urls(title='AffPlat', public=True)),
-    # path('api/swagger/', SwaggerSchemaView.as_view()),
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
     path('auth/', obtain_jwt_token),
-    # path('api/refresh-token/', refresh_jwt_token),
-    # path('api/', include('offer.urls')),
+
     path('affiliate/', include('affiliate.urls')),
     path('network/', include('network.urls')),
     path('', include('tracker.urls')),

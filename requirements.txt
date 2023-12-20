@@ -23,6 +23,7 @@ django-tinymce==3.5.0
 djangorestframework==3.14.0
 djangorestframework-jwt==1.11.0
 djangorestframework-stubs==1.8.0
+drf-spectacular==0.27.0
 flake8==6.0.0
 gunicorn==20.1.0
 honcho==1.1.0
