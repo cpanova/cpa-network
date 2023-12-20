@@ -1,0 +1,1697 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /affiliate/conversions/:
+    get:
+      operationId: affiliate_conversions_retrieve
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /affiliate/offers/:
+    get:
+      operationId: affiliate_offers_list
+      parameters:
+      - in: query
+        name: categories
+        schema:
+          type: integer
+        description: Exact category name or comma-separated names list
+      - in: query
+        name: countries
+        schema:
+          type: string
+        description: Country 2-character code or comma-separated list
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+          description: ''
+  /affiliate/offers/{id}/:
+    get:
+      operationId: affiliate_offers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+          description: ''
+  /affiliate/offers/{id}/tracking-link/:
+    get:
+      operationId: affiliate_offers_tracking_link_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /affiliate/profile/:
+    get:
+      operationId: affiliate_profile_retrieve
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffiliateModel'
+          description: ''
+  /affiliate/sign-up/:
+    post:
+      operationId: affiliate_sign_up_create
+      tags:
+      - affiliate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /affiliate/stats/by-goal/:
+    get:
+      operationId: affiliate_stats_by_goal_retrieve
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /affiliate/stats/by-sub/{sub}/:
+    get:
+      operationId: affiliate_stats_by_sub_retrieve
+      parameters:
+      - in: path
+        name: sub
+        schema:
+          type: integer
+        required: true
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /affiliate/stats/daily/:
+    get:
+      operationId: affiliate_stats_daily_retrieve
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /affiliate/stats/offers/:
+    get:
+      operationId: affiliate_stats_offers_retrieve
+      tags:
+      - affiliate
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/advertisers/:
+    get:
+      operationId: api_advertisers_list
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Advertiser'
+          description: ''
+    post:
+      operationId: api_advertisers_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Advertiser'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertiser'
+          description: ''
+  /api/advertisers/{id}/:
+    get:
+      operationId: api_advertisers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this advertiser.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertiser'
+          description: ''
+    put:
+      operationId: api_advertisers_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this advertiser.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Advertiser'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertiser'
+          description: ''
+    patch:
+      operationId: api_advertisers_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this advertiser.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdvertiser'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertiser'
+          description: ''
+    delete:
+      operationId: api_advertisers_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this advertiser.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/categories/:
+    get:
+      operationId: api_categories_list
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/conversions/:
+    post:
+      operationId: api_conversions_create
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/countries/:
+    get:
+      operationId: api_countries_list
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+          description: ''
+  /api/landings/:
+    get:
+      operationId: api_landings_list
+      parameters:
+      - in: query
+        name: offer_id
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Landing'
+          description: ''
+    post:
+      operationId: api_landings_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Landing'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Landing'
+          description: ''
+  /api/landings/{id}/:
+    get:
+      operationId: api_landings_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this landing.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Landing'
+          description: ''
+    put:
+      operationId: api_landings_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this landing.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Landing'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Landing'
+          description: ''
+    patch:
+      operationId: api_landings_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this landing.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLanding'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Landing'
+          description: ''
+    delete:
+      operationId: api_landings_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this landing.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/offers/:
+    get:
+      operationId: api_offers_list
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+          description: ''
+    post:
+      operationId: api_offers_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offer'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+          description: ''
+  /api/offers/{id}/:
+    get:
+      operationId: api_offers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this offer.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+          description: ''
+    put:
+      operationId: api_offers_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this offer.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offer'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+          description: ''
+    patch:
+      operationId: api_offers_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this offer.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOffer'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+          description: ''
+    delete:
+      operationId: api_offers_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this offer.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/payouts/:
+    get:
+      operationId: api_payouts_list
+      parameters:
+      - in: query
+        name: offer_id
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payout'
+          description: ''
+    post:
+      operationId: api_payouts_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payout'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+          description: ''
+  /api/payouts/{id}/:
+    get:
+      operationId: api_payouts_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payout.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+          description: ''
+    put:
+      operationId: api_payouts_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payout.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payout'
+        required: true
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+          description: ''
+    patch:
+      operationId: api_payouts_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payout.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPayout'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+          description: ''
+    delete:
+      operationId: api_payouts_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this payout.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/schema/:
+    get:
+      operationId: api_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/traffic-sources/:
+    get:
+      operationId: api_traffic_sources_list
+      parameters:
+      - in: query
+        name: offer_id
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferTrafficSource'
+          description: ''
+    post:
+      operationId: api_traffic_sources_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferTrafficSource'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferTrafficSource'
+          description: ''
+  /api/traffic-sources/{id}/:
+    get:
+      operationId: api_traffic_sources_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this offer traffic source.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferTrafficSource'
+          description: ''
+    put:
+      operationId: api_traffic_sources_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this offer traffic source.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferTrafficSource'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferTrafficSource'
+          description: ''
+    patch:
+      operationId: api_traffic_sources_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this offer traffic source.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOfferTrafficSource'
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferTrafficSource'
+          description: ''
+    delete:
+      operationId: api_traffic_sources_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this offer traffic source.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /auth/:
+    post:
+      operationId: auth_create
+      description: |-
+        API View that receives a POST with a user's username and password.
+
+        Returns a JSON Web Token that can be used for authenticated requests.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JSONWebToken'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JSONWebToken'
+          description: ''
+  /network/affiliates/:
+    get:
+      operationId: network_affiliates_list
+      tags:
+      - network
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Affiliate'
+          description: ''
+  /network/affiliates/{id}/:
+    get:
+      operationId: network_affiliates_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - network
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Affiliate'
+          description: ''
+  /network/conversions/:
+    get:
+      operationId: network_conversions_retrieve
+      tags:
+      - network
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /network/offers/:
+    get:
+      operationId: network_offers_list
+      tags:
+      - network
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+          description: ''
+  /network/offers/{id}/:
+    get:
+      operationId: network_offers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - network
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+          description: ''
+  /network/stats/affiliates/:
+    get:
+      operationId: network_stats_affiliates_retrieve
+      tags:
+      - network
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /network/stats/daily/:
+    get:
+      operationId: network_stats_daily_retrieve
+      tags:
+      - network
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /network/stats/offers/:
+    get:
+      operationId: network_stats_offers_retrieve
+      tags:
+      - network
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Advertiser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company:
+          type: string
+          maxLength: 64
+        email:
+          type: string
+          maxLength: 64
+        contact_person:
+          type: string
+          maxLength: 64
+        messenger:
+          type: string
+          maxLength: 64
+        site:
+          type: string
+          maxLength: 64
+        comment:
+          type: string
+      required:
+      - comment
+      - company
+      - email
+      - id
+    Affiliate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - id
+      - username
+    AffiliateModel:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 256
+      required:
+      - name
+    Country:
+      type: object
+      properties:
+        iso:
+          type: string
+          maxLength: 2
+      required:
+      - iso
+    Currency:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 3
+        name:
+          type: string
+          maxLength: 128
+      required:
+      - code
+      - name
+    Goal:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 64
+      required:
+      - name
+    JSONWebToken:
+      type: object
+      description: |-
+        Serializer class used to validate a username and password.
+
+        'username' is identified by the custom UserModel.USERNAME_FIELD.
+
+        Returns a JSON Web Token that can be used to authenticate later calls.
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    Landing:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        offer_id:
+          type: integer
+          writeOnly: true
+        name:
+          type: string
+          maxLength: 100
+        url:
+          type: string
+          maxLength: 1024
+        preview_url:
+          type: string
+          maxLength: 1024
+        offer:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+      required:
+      - id
+      - name
+      - offer
+      - offer_id
+    Nested:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 256
+        description:
+          type: string
+        description_html:
+          type: string
+        tracking_link:
+          type: string
+          maxLength: 1024
+        preview_link:
+          type: string
+          maxLength: 1024
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        icon:
+          type: string
+          nullable: true
+          maxLength: 255
+        advertiser:
+          type: integer
+          nullable: true
+        countries:
+          type: array
+          items:
+            type: string
+        categories:
+          type: array
+          items:
+            type: integer
+        traffic_sources:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+      required:
+      - countries
+      - id
+      - traffic_sources
+    Offer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 256
+        description:
+          type: string
+        description_html:
+          type: string
+        preview_link:
+          type: string
+          maxLength: 1024
+        icon:
+          type: string
+          nullable: true
+          maxLength: 255
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+          readOnly: true
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+          readOnly: true
+        traffic_sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferTrafficSource'
+          readOnly: true
+        payouts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payout'
+          readOnly: true
+      required:
+      - categories
+      - countries
+      - id
+      - payouts
+      - traffic_sources
+    OfferTrafficSource:
+      type: object
+      properties:
+        name:
+          type: string
+          readOnly: true
+        allowed:
+          type: boolean
+      required:
+      - name
+    PatchedAdvertiser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        company:
+          type: string
+          maxLength: 64
+        email:
+          type: string
+          maxLength: 64
+        contact_person:
+          type: string
+          maxLength: 64
+        messenger:
+          type: string
+          maxLength: 64
+        site:
+          type: string
+          maxLength: 64
+        comment:
+          type: string
+    PatchedLanding:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        offer_id:
+          type: integer
+          writeOnly: true
+        name:
+          type: string
+          maxLength: 100
+        url:
+          type: string
+          maxLength: 1024
+        preview_url:
+          type: string
+          maxLength: 1024
+        offer:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+    PatchedOffer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 256
+        description:
+          type: string
+        description_html:
+          type: string
+        tracking_link:
+          type: string
+          maxLength: 1024
+        preview_link:
+          type: string
+          maxLength: 1024
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        icon:
+          type: string
+          nullable: true
+          maxLength: 255
+        advertiser:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Nested'
+          readOnly: true
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Nested'
+          readOnly: true
+        traffic_sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Nested'
+          readOnly: true
+    PatchedOfferTrafficSource:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        offer_id:
+          type: integer
+          writeOnly: true
+        traffic_source_id:
+          type: integer
+          writeOnly: true
+        allowed:
+          type: boolean
+        offer:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+        traffic_source:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+    PatchedPayout:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        offer_id:
+          type: integer
+          writeOnly: true
+        currency_id:
+          type: integer
+          writeOnly: true
+        revenue:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        payout:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        goal_value:
+          type: string
+          maxLength: 20
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+        goal:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+        offer:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Nested'
+          readOnly: true
+    Payout:
+      type: object
+      properties:
+        payout:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+          readOnly: true
+        goal:
+          allOf:
+          - $ref: '#/components/schemas/Goal'
+          readOnly: true
+      required:
+      - countries
+      - currency
+      - goal
+      - payout
+    StatusEnum:
+      enum:
+      - Active
+      - Paused
+      - Stopped
+      type: string
+      description: |-
+        * `Active` - Active
+        * `Paused` - Paused
+        * `Stopped` - Stopped
+    TypeEnum:
+      enum:
+      - Fixed
+      - Percent
+      type: string
+      description: |-
+        * `Fixed` - Fixed
+        * `Percent` - Percent
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+        confirm_password:
+          type: string
+          writeOnly: true
+      required:
+      - confirm_password
+      - id
+      - password
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "JWT"
