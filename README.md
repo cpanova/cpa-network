@@ -10,7 +10,7 @@
 
 # About
 
-![](docs/api-spec.png)
+[![](docs/api-spec.png)](https://cpanova.github.io/cpa-network/index.html)
 
 Backend for CPA Network
 
