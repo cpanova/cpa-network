@@ -45,3 +45,7 @@ docker compose up
 django admin: http://0.0.0.0:8000/admin/login/
 
 API spec: http://0.0.0.0:8000/api/
+
+# Contribute
+
+Take part in short [survey](https://forms.gle/fCU6NYjuY8A1J8xd6) (5 questions, no email)
