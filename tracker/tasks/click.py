@@ -1,15 +1,14 @@
-from geolite2 import geolite2
 from django.contrib.auth import get_user_model
 from project._celery import _celery
 from tracker.models import Click
 from ext.ipapi import API, Err as IpstackErr
 
 
-def detect_country(ip: str) -> str:
-    reader = geolite2.reader()
-    ip_info = reader.get(ip) or {}
-    country = ip_info.get("country", {}).get("iso_code", "")
-    return country
+# def detect_country(ip: str) -> str:
+#     reader = geolite2.reader()
+#     ip_info = reader.get(ip) or {}
+#     country = ip_info.get("country", {}).get("iso_code", "")
+#     return country
 
 
 def detect_country_service(ip: str) -> str:

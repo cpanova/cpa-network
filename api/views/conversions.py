@@ -81,14 +81,14 @@ conversion_create_args = {
     'offer_id': fields.Int(required=True),
     'pid': fields.Int(required=True, validate=user_must_exist_in_db),
     'status': fields.Str(
-        missing=REJECTED_STATUS,
+        load_default=REJECTED_STATUS,
         validate=status_must_be_known),
-    'currency': fields.Str(missing=''),
-    'goal': fields.Str(missing=''),
-    'revenue': fields.Float(missing=.0),
-    'payout': fields.Float(missing=.0),
-    'sub1': fields.Str(missing=''),
-    'goal_id': fields.Int(missing=None),
+    'currency': fields.Str(load_default=''),
+    'goal': fields.Str(load_default=''),
+    'revenue': fields.Float(load_default=.0),
+    'payout': fields.Float(load_default=.0),
+    'sub1': fields.Str(load_default=''),
+    'goal_id': fields.Int(load_default=None),
 }
 
 

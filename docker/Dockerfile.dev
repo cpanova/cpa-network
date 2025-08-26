@@ -1,0 +1,40 @@
+# Use official Python runtime as base image
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV POETRY_VERSION=1.7.1
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN pip install "poetry==$POETRY_VERSION"
+
+# Copy poetry files
+COPY pyproject.toml poetry.lock* ./
+
+# Configure Poetry to not create virtual environments
+RUN poetry config virtualenvs.create false
+
+# Install dependencies
+RUN poetry install --no-interaction --no-ansi --only main
+
+# Copy project
+COPY . .
+
+# Create and set permissions for static files
+RUN mkdir -p static media && chmod -R 755 static media
+
+# Expose port
+EXPOSE 8000
+
+# Run application
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
