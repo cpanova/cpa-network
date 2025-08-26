@@ -110,3 +110,8 @@ volumes
 /project/settings/local.py
 
 sandbox
+
+.bmad-core
+.cursor
+.gemini
+.qwen
