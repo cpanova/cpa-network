@@ -84,6 +84,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 #     }
 # }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -141,7 +142,7 @@ STATICFILES_STORAGE = (
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
@@ -157,8 +158,8 @@ REST_FRAMEWORK = {
 }
 
 
-JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=60 * 60 * 24)
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }
 
 

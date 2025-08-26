@@ -14,7 +14,7 @@ jobs:
       max-parallel: 4
       matrix:
         db: [postgres]
-        python-version: ["3.10"]
+        python-version: [3.11]
     
     
     services:

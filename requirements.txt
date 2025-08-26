@@ -1,5 +1,4 @@
 amqp==5.1.1
-asgiref==3.5.2
 async-timeout==4.0.2
 billiard==3.6.4.0
 celery==5.2.7
@@ -12,7 +11,7 @@ click-repl==0.2.0
 coreapi==2.3.3
 coreschema==0.0.4
 dj-database-url==0.5.0
-Django==3.1.14
+Django>=4.2,<4.3
 django-cors-headers==3.11.0
 django-countries-plus==2.1.0
 django-filter==21.1
@@ -21,7 +20,7 @@ django-stubs==1.13.0
 django-stubs-ext==0.7.0
 django-tinymce==3.5.0
 djangorestframework==3.14.0
-djangorestframework-jwt==1.11.0
+djangorestframework-simplejwt
 djangorestframework-stubs==1.8.0
 drf-spectacular==0.27.0
 flake8==6.0.0
@@ -45,7 +44,6 @@ prompt-toolkit==3.0.33
 psycopg2-binary==2.9.5
 pycodestyle==2.10.0
 pyflakes==3.0.1
-PyJWT==1.7.1
 pyparsing==3.0.9
 pytz==2022.6
 PyYAML==6.0
