@@ -34,7 +34,7 @@ COPY . .
 RUN mkdir -p static media && chmod -R 755 static media
 
 # Expose port
-EXPOSE 8000
+EXPOSE 80
 
 # Run application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:80"]
