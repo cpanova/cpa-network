@@ -15,14 +15,14 @@ class ReportViewsTest(TestCase):
 
     def test_goal_report_view_login_required(self):
         self.client.logout()
-        response = self.client.get(reverse('goal_report'))
-        self.assertRedirects(response, reverse('login') + '?next=/reports/goal/')
+        response = self.client.get(reverse('affiliate_ui:goal_report'))
+        self.assertRedirects(response, reverse('affiliate_ui:login') + '?next=/reports/goal/')
 
     @patch('affiliate_ui.views.report_views.goal_report')
     def test_goal_report_view_renders_with_data(self, mock_goal_report):
         mock_goal_report.return_value = [{'goal_name': 'Test Goal', 'count': 5}]
 
-        response = self.client.get(reverse('goal_report'))
+        response = self.client.get(reverse('affiliate_ui:goal_report'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'affiliate_ui/goal_report.html')
         self.assertIn('data', response.context)
@@ -34,7 +34,7 @@ class ReportViewsTest(TestCase):
         end_date = date.today() - timedelta(days=5)
         mock_goal_report.return_value = []
 
-        response = self.client.get(reverse('goal_report'), {
+        response = self.client.get(reverse('affiliate_ui:goal_report'), {
             'start_date': start_date.isoformat(),
             'end_date': end_date.isoformat()
         })
@@ -51,7 +51,7 @@ class ReportViewsTest(TestCase):
         mock_goal_report.return_value = []
         mock_goal_report.reset_mock()
 
-        response = self.client.get(reverse('goal_report'))
+        response = self.client.get(reverse('affiliate_ui:goal_report'))
         self.assertEqual(response.status_code, 200)
         mock_goal_report.assert_called_once()
         args, kwargs = mock_goal_report.call_args
@@ -66,7 +66,7 @@ class ReportViewsTest(TestCase):
         end_date = date.today() - timedelta(days=5)
         mock_goal_report.return_value = []
 
-        response = self.client.get(reverse('goal_report'), {
+        response = self.client.get(reverse('affiliate_ui:goal_report'), {
             'start_date': start_date.isoformat(),
             'end_date': end_date.isoformat()
         })

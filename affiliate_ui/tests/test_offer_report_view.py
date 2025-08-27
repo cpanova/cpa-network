@@ -15,14 +15,14 @@ class ReportViewsTest(TestCase):
 
     def test_offer_report_view_login_required(self):
         self.client.logout()
-        response = self.client.get(reverse('offer_report'))
-        self.assertRedirects(response, reverse('login') + '?next=/reports/offer/')
+        response = self.client.get(reverse('affiliate_ui:offer_report'))
+        self.assertRedirects(response, reverse('affiliate_ui:login') + '?next=/reports/offer/')
 
     @patch('affiliate_ui.views.report_views.offer_report')
     def test_offer_report_view_renders_with_data(self, mock_offer_report):
         mock_offer_report.return_value = [{'offer_name': 'Test Offer', 'revenue': 100}]
 
-        response = self.client.get(reverse('offer_report'))
+        response = self.client.get(reverse('affiliate_ui:offer_report'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'affiliate_ui/offer_report.html')
         self.assertIn('data', response.context)
@@ -34,7 +34,7 @@ class ReportViewsTest(TestCase):
         end_date = date.today() - timedelta(days=5)
         mock_offer_report.return_value = []
 
-        response = self.client.get(reverse('offer_report'), {
+        response = self.client.get(reverse('affiliate_ui:offer_report'), {
             'start_date': start_date.isoformat(),
             'end_date': end_date.isoformat()
         })
@@ -50,7 +50,7 @@ class ReportViewsTest(TestCase):
     def test_offer_report_view_default_dates(self, mock_offer_report):
         mock_offer_report.return_value = []
 
-        response = self.client.get(reverse('offer_report'))
+        response = self.client.get(reverse('affiliate_ui:offer_report'))
         self.assertEqual(response.status_code, 200)
         mock_offer_report.assert_called_once()
         args, kwargs = mock_offer_report.call_args
@@ -65,7 +65,7 @@ class ReportViewsTest(TestCase):
         end_date = date.today() - timedelta(days=5)
         mock_offer_report.return_value = []
 
-        response = self.client.get(reverse('offer_report'), {
+        response = self.client.get(reverse('affiliate_ui:offer_report'), {
             'start_date': start_date.isoformat(),
             'end_date': end_date.isoformat()
         })

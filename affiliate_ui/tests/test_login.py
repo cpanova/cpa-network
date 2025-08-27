@@ -8,8 +8,8 @@ class LoginTest(TestCase):
         self.username = 'testuser'
         self.password = 'testpass123'
         self.user = User.objects.create_user(username=self.username, password=self.password)
-        self.login_url = reverse('login')
-        self.dashboard_url = reverse('dashboard')
+        self.login_url = reverse('affiliate_ui:login')
+        self.dashboard_url = reverse('affiliate_ui:dashboard')
 
     def test_login_view_get(self):
         response = self.client.get(self.login_url)

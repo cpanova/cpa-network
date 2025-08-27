@@ -11,8 +11,8 @@ class DashboardTest(TestCase):
         self.username = 'testuser_dashboard'
         self.password = 'testpass123'
         self.user = User.objects.create_user(username=self.username, password=self.password)
-        self.dashboard_url = reverse('dashboard')
-        self.login_url = reverse('login')
+        self.dashboard_url = reverse('affiliate_ui:dashboard')
+        self.login_url = reverse('affiliate_ui:login')
 
         # Create test data
         Click.objects.create(affiliate=self.user, ip='127.0.0.1', revenue=Decimal('0.5'), payout=Decimal('0.2'))

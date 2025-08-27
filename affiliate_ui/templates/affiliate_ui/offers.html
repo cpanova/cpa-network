@@ -6,7 +6,7 @@
 <div class="container">
     <h1 class="my-4">Offers</h1>
 
-    <form method="get" action="{% url 'offer_list' %}" class="row g-3 mb-4">
+    <form method="get" action="{% url 'affiliate_ui:offer_list' %}" class="row g-3 mb-4">
         <div class="col-md-6">
             <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ search_query }}">
         </div>
@@ -35,7 +35,7 @@
                     {% else %}
                         <p class="card-text"><strong>Payout:</strong> N/A</p>
                     {% endif %}
-                    <a href="{% url 'offer_detail' offer.id %}" class="btn btn-secondary">View Details</a>
+                    <a href="{% url 'affiliate_ui:offer_detail' offer.id %}" class="btn btn-secondary">View Details</a>
                 </div>
             </div>
         </div>

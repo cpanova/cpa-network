@@ -12,8 +12,8 @@ class OfferListViewTest(TestCase):
         self.username = 'testuser_offers'
         self.password = 'testpass123'
         self.user = User.objects.create_user(username=self.username, password=self.password)
-        self.offers_url = reverse('offer_list')
-        self.login_url = reverse('login')
+        self.offers_url = reverse('affiliate_ui:offer_list')
+        self.login_url = reverse('affiliate_ui:login')
 
         self.category1 = Category.objects.create(name='Finance')
         self.category2 = Category.objects.create(name='E-commerce')
@@ -68,7 +68,7 @@ class OfferDetailViewTest(TestCase):
         self.username = 'testuser_offer_detail'
         self.password = 'testpass123'
         self.user = User.objects.create_user(username=self.username, password=self.password)
-        self.login_url = reverse('login')
+        self.login_url = reverse('affiliate_ui:login')
 
         self.currency = Currency.objects.create(code='USD', name='US Dollar')
         self.goal = Goal.objects.create(name='Test Goal')
@@ -79,7 +79,7 @@ class OfferDetailViewTest(TestCase):
             status=ACTIVE_STATUS
         )
         Payout.objects.create(offer=self.offer, revenue=15, payout=7.5, currency=self.currency, goal=self.goal)
-        self.offer_detail_url = reverse('offer_detail', args=[self.offer.id])
+        self.offer_detail_url = reverse('affiliate_ui:offer_detail', args=[self.offer.id])
 
     def test_offer_detail_view_login_required(self):
         response = self.client.get(self.offer_detail_url)

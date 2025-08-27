@@ -15,8 +15,8 @@ class ReportViewsTest(TestCase):
 
     def test_daily_report_view_login_required(self):
         self.client.logout()
-        response = self.client.get(reverse('daily_report'))
-        self.assertRedirects(response, reverse('login') + '?next=/reports/daily/')
+        response = self.client.get(reverse('affiliate_ui:daily_report'))
+        self.assertRedirects(response, reverse('affiliate_ui:login') + '?next=/reports/daily/')
 
     @patch('affiliate_ui.views.report_views.daily_report')
     @patch('offer.models.Offer.objects')
@@ -24,7 +24,7 @@ class ReportViewsTest(TestCase):
         mock_daily_report.return_value = [{'date': '2025-08-01', 'clicks': 10, 'conversions': 2}]
         mock_offer_objects.filter.return_value.distinct.return_value = []
 
-        response = self.client.get(reverse('daily_report'))
+        response = self.client.get(reverse('affiliate_ui:daily_report'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'affiliate_ui/daily_report.html')
         self.assertIn('data', response.context)
@@ -40,7 +40,7 @@ class ReportViewsTest(TestCase):
         mock_daily_report.reset_mock()
         mock_offer_objects.filter.return_value.distinct.return_value = []
 
-        response = self.client.get(reverse('daily_report'), {
+        response = self.client.get(reverse('affiliate_ui:daily_report'), {
             'start_date': start_date.isoformat(),
             'end_date': end_date.isoformat()
         })
@@ -58,7 +58,7 @@ class ReportViewsTest(TestCase):
         mock_daily_report.return_value = []
         mock_offer_objects.filter.return_value.distinct.return_value = []
 
-        response = self.client.get(reverse('daily_report'), {'offer_id': '123'})
+        response = self.client.get(reverse('affiliate_ui:daily_report'), {'offer_id': '123'})
         self.assertEqual(response.status_code, 200)
         mock_daily_report.assert_called_once()
         args, kwargs = mock_daily_report.call_args
@@ -71,7 +71,7 @@ class ReportViewsTest(TestCase):
         mock_daily_report.return_value = []
         mock_offer_objects.filter.return_value.distinct.return_value = []
 
-        response = self.client.get(reverse('daily_report'))
+        response = self.client.get(reverse('affiliate_ui:daily_report'))
         self.assertEqual(response.status_code, 200)
         mock_daily_report.assert_called_once()
         args, kwargs = mock_daily_report.call_args
@@ -90,7 +90,7 @@ class ReportViewsTest(TestCase):
         mock_daily_report.return_value = []
         mock_offer_objects.filter.return_value.distinct.return_value = []
 
-        response = self.client.get(reverse('daily_report'), {
+        response = self.client.get(reverse('affiliate_ui:daily_report'), {
             'start_date': start_date.isoformat(),
             'end_date': end_date.isoformat()
         })
