@@ -11,7 +11,17 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container">
-            <a class="navbar-brand" href="#">CPA Network</a>
+            <a class="navbar-brand" href="{% url 'dashboard' %}">CPA Network</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'offer_list' %}">Offers</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
