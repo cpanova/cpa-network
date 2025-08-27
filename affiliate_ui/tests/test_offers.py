@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 
 from offer.models import Offer, Category, Payout, Currency, Goal, ACTIVE_STATUS, PAUSED_STATUS
-from affiliate_ui.views import generate_tracking_link
+from affiliate_ui.views.general_views import generate_tracking_link
 
 
 class OfferListViewTest(TestCase):
