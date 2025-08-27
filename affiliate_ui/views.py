@@ -1,6 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count, Prefetch
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import LoginView
 
 from offer.models import Offer, Category, Payout, ACTIVE_STATUS
@@ -49,6 +50,23 @@ def offer_list(request):
         'selected_category': int(category_id) if category_id else None,
     }
     return render(request, 'affiliate_ui/offers.html', context)
+
+
+def generate_tracking_link(offer_id: int, pid: int) -> str:
+    base_url = settings.TRACKER_URL
+    url = f"{base_url}/click?offer_id={offer_id}&pid={pid}"
+    return url
+
+
+@login_required
+def offer_detail(request, offer_id):
+    offer = get_object_or_404(Offer, pk=offer_id)
+    tracking_link = generate_tracking_link(offer_id, request.user.id)
+    context = {
+        'offer': offer,
+        'tracking_link': tracking_link,
+    }
+    return render(request, 'affiliate_ui/offer_details.html', context)
 
 
 class AffiliateLoginView(LoginView):

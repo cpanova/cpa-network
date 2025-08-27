@@ -1,0 +1,43 @@
+{% extends 'affiliate_ui/base.html' %}
+
+{% block title %}{{ offer.title }} - Offer Details{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ offer.title }}</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Description:</strong></p>
+        <div>{{ offer.description_html|safe }}</div>
+
+        <p class="mt-3"><strong>Payout:</strong></p>
+        <ul>
+            {% for payout in offer.payouts.all %}
+                <li>{{ payout.payout }} {{ payout.currency.code }}</li>
+            {% empty %}
+                <li>No payout information available.</li>
+            {% endfor %}
+        </ul>
+
+        <p class="mt-3"><strong>Terms and Restrictions:</strong></p>
+        <p>Please review the offer terms and restrictions carefully.</p>
+
+        <h4 class="mt-4">Your Tracking Link</h4>
+        <div class="input-group mb-3">
+            <input type="text" id="tracking-link" class="form-control" value="{{ tracking_link }}" readonly>
+            <button class="btn btn-outline-secondary" type="button" id="copy-button">Copy</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('copy-button').addEventListener('click', function() {
+    var copyText = document.getElementById('tracking-link');
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); /* For mobile devices */
+    document.execCommand('copy');
+    alert('Copied the text: ' + copyText.value);
+});
+</script>
+{% endblock %}

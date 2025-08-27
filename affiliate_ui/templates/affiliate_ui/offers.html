@@ -35,7 +35,7 @@
                     {% else %}
                         <p class="card-text"><strong>Payout:</strong> N/A</p>
                     {% endif %}
-                    <a href="#" class="btn btn-secondary">View Details</a>
+                    <a href="{% url 'offer_detail' offer.id %}" class="btn btn-secondary">View Details</a>
                 </div>
             </div>
         </div>

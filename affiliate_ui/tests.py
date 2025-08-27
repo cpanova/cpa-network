@@ -3,9 +3,11 @@ from django.test import TestCase
 from django.apps import apps
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.conf import settings
 
 from offer.models import Offer, Category, Payout, Currency, Goal, ACTIVE_STATUS, PAUSED_STATUS
 from tracker.models import Click, Conversion, APPROVED_STATUS, PENDING_STATUS
+from .views import generate_tracking_link
 
 
 class AffiliateUiConfigTest(TestCase):
@@ -134,3 +136,47 @@ class OfferListViewTest(TestCase):
         response = self.client.get(self.offers_url, {'category': self.category1.id})
         self.assertContains(response, 'Credit Card Offer')
         self.assertNotContains(response, 'Online Store Discount')
+
+
+class OfferDetailViewTest(TestCase):
+    def setUp(self):
+        self.username = 'testuser_offer_detail'
+        self.password = 'testpass123'
+        self.user = User.objects.create_user(username=self.username, password=self.password)
+        self.login_url = reverse('login')
+
+        self.currency = Currency.objects.create(code='USD', name='US Dollar')
+        self.goal = Goal.objects.create(name='Test Goal')
+
+        self.offer = Offer.objects.create(
+            title='Detailed Offer',
+            description_html='<p>Test Description</p>',
+            status=ACTIVE_STATUS
+        )
+        Payout.objects.create(offer=self.offer, revenue=15, payout=7.5, currency=self.currency, goal=self.goal)
+        self.offer_detail_url = reverse('offer_detail', args=[self.offer.id])
+
+    def test_offer_detail_view_login_required(self):
+        response = self.client.get(self.offer_detail_url)
+        self.assertRedirects(response, f'{self.login_url}?next={self.offer_detail_url}')
+
+    def test_offer_detail_view_authenticated(self):
+        self.client.login(username=self.username, password=self.password)
+        response = self.client.get(self.offer_detail_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'affiliate_ui/offer_details.html')
+        self.assertContains(response, 'Detailed Offer')
+        self.assertContains(response, '<p>Test Description</p>')
+        self.assertContains(response, '7.5') # Payout
+
+    def test_tracking_link_generation(self):
+        self.client.login(username=self.username, password=self.password)
+        response = self.client.get(self.offer_detail_url)
+        expected_link = f"{settings.TRACKER_URL}/click?offer_id={self.offer.id}&amp;pid={self.user.id}"
+        self.assertContains(response, expected_link)
+
+    def test_generate_tracking_link_function(self):
+        offer_id = 1
+        pid = 100
+        expected_link = f"{settings.TRACKER_URL}/click?offer_id={offer_id}&pid={pid}"
+        self.assertEqual(generate_tracking_link(offer_id, pid), expected_link)
