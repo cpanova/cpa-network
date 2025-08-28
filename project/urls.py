@@ -36,6 +36,7 @@ urlpatterns = [
 
     path('affiliate/', include('affiliate.urls')),
     path('network/', include('network.urls')),
+    path('', include('affiliate_ui.urls', namespace='affiliate_ui')),
     path('', include('tracker.urls')),
     path('api/', include('dictionaries.urls')),
     path('tinymce/', include('tinymce.urls')),

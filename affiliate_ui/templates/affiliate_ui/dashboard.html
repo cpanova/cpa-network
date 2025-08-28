@@ -1,0 +1,35 @@
+{% extends 'affiliate_ui/base.html' %}
+
+{% block title %}Dashboard - {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Dashboard</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Total Clicks</h5>
+                <p class="card-text fs-2">{{ clicks_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Total Conversions</h5>
+                <p class="card-text fs-2">{{ conversions_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Total Earnings</h5>
+                <p class="card-text fs-2">${{ total_earnings }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

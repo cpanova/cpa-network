@@ -1,0 +1,49 @@
+{% extends 'affiliate_ui/base.html' %}
+
+{% block title %}Offers - CPA Network{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Offers</h1>
+
+    <form method="get" action="{% url 'affiliate_ui:offer_list' %}" class="row g-3 mb-4">
+        <div class="col-md-6">
+            <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ search_query }}">
+        </div>
+        <div class="col-md-4">
+            <select name="category" class="form-select">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}" {% if category.id == selected_category %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+
+    <div class="row">
+        {% for offer in offers %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ offer.title }}</h5>
+                    <p class="card-text">{{ offer.description|truncatewords:20 }}</p>
+                    {% if offer.payouts.first %}
+                        <p class="card-text"><strong>Payout:</strong> ${{ offer.payouts.first.payout }}</p>
+                    {% else %}
+                        <p class="card-text"><strong>Payout:</strong> N/A</p>
+                    {% endif %}
+                    <a href="{% url 'affiliate_ui:offer_detail' offer.id %}" class="btn btn-secondary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <p>No offers found.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
