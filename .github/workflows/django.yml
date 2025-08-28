@@ -2,23 +2,20 @@ name: Django CI
 
 on:
   push:
-    branches: [ "*" ]
+    branches: ["*"]
   pull_request:
-    branches: [ "*" ]
+    branches: ["*"]
 
 jobs:
   build:
-
     runs-on: ubuntu-22.04
     strategy:
       max-parallel: 4
       matrix:
         db: [postgres]
         python-version: [3.11]
-    
-    
+
     services:
-      
       postgres:
         image: postgres:10
         env:
@@ -32,7 +29,7 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-      
+
       redis:
         # Docker Hub image
         image: redis
@@ -45,24 +42,21 @@ jobs:
         ports:
           - 6379:6379
 
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint with Ruff
-      run: ruff check .
-    - name: Run Tests
-      run: python manage.py test
-      env:
-        DJ_SECRET_KEY: xxx
-        DATABASE_URL: postgresql://postgres:postgres@127.0.0.1/postgres
-        REDIS_URL: redis://127.0.0.1
-        TRACKER_URL: https://example.com
-        IPSTACK_TOKEN: xxx
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Install Dependencies
+        run: poetry install
+      - name: Run Tests
+        run: poetry run python manage.py test
+        env:
+          DJ_SECRET_KEY: xxx
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1/postgres
+          REDIS_URL: redis://127.0.0.1
+          TRACKER_URL: https://example.com
+          IPSTACK_TOKEN: xxx
