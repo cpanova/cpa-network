@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "CPA-Network"
+name = "project"
 version = "0.1.0"
 description = ""
 authors = ["AsL <bloogrox@gmail.com>"]
