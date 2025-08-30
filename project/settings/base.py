@@ -1,5 +1,6 @@
 import os
 import datetime
+import dj_database_url
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -181,6 +182,14 @@ CORS_ALLOW_METHODS = (
     'POST',
     'PUT',
 )
+
+DATABASE_URL = os.environ['DATABASE_URL']
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=DATABASE_URL,
+        engine='django.db.backends.postgresql_psycopg2')
+}
 
 REDIS_URL = os.environ['REDIS_URL']
 
